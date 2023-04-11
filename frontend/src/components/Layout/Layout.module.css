@@ -1,0 +1,22 @@
+.layout {
+  height: 100vh;
+}
+
+.sider {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #aaacba;
+  background-color: #131313 !important;
+}
+
+.icons {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 1rem;
+}
+
+.content {
+  background-color: #202329;
+  color: #fff;
+}
