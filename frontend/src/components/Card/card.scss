@@ -1,0 +1,56 @@
+.card {
+  display: flex;
+  margin-bottom: 0.5rem;
+  padding: 10px;
+  border-radius: 12px;
+  .avatar {
+    img {
+      object-fit: cover;
+      width: 3.5rem;
+      border-radius: 30%;
+    }
+  }
+
+  .detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+    .name {
+      display: flex;
+      justify-content: space-between;
+      h3 {
+        font-size: 1rem;
+        margin: 0;
+      }
+
+      p {
+        font-size: 0.8rem;
+        margin: 0;
+      }
+    }
+
+    .message {
+      max-width: 9vw;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: 0.8rem;
+      margin: 0;
+      margin-top: 0.4rem;
+    }
+  }
+}
+
+.card:hover {
+  cursor: pointer;
+  background-color: #898787;
+}
+
+.card.card-active {
+  background-color: #39404a;
+}
+
+.card.card-active:hover {
+  background-color: #39404a;
+}

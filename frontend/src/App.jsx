@@ -6,7 +6,7 @@ import MainChat from './components/MainChat/MainChat'
 function App() {
   return (
     <Layout>
-      <div className="container">
+      <div className="container" style={{ display: 'flex', height: '100vh' }}>
         <LeftBar />
         <MainChat />
       </div>

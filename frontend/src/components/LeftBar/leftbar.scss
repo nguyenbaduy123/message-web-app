@@ -1,0 +1,47 @@
+.chat-group {
+  padding-top: 1.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  height: 100%;
+  .search {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: #2e343d;
+    border-radius: 100px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    .search-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .search-bar {
+      width: 90%;
+      input {
+        border-radius: 100px;
+        background-color: #2e343d;
+        color: white;
+        border: none;
+        outline: none;
+        font-size: 1.1rem;
+        padding: 8px;
+        width: 90%;
+      }
+    }
+  }
+
+  .card-list {
+    margin-top: 1.5rem;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    background-color: #423f3f;
+    right: -1.3rem;
+    width: 2px;
+    height: 100%;
+  }
+}
