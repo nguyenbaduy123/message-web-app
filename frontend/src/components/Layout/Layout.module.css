@@ -1,22 +1,14 @@
-.layout {
-  height: 100vh;
-}
-
-.sider {
+.container {
   display: flex;
-  flex-direction: column;
-  text-align: center;
-  color: #aaacba;
-  background-color: #131313 !important;
-}
-
-.icons {
-  width: 2.5rem;
-  height: 2.5rem;
-  margin: 1rem;
-}
-
-.content {
-  background-color: #202329;
   color: #fff;
+  max-width: 1000px;
+  padding: 3rem;
+  min-height: 600px;
+  border-radius: 10px;
+}
+
+.main-content {
+  width: 100%;
+  background-color: var(--dark1);
+  padding: 16px;
 }

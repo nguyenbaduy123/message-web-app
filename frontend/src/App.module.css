@@ -1,0 +1,17 @@
+.container {
+  max-width: 100%;
+  background-color: rgb(49, 51, 56, 0.9);
+  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+}
+
+.left-bar {
+  width: 25%;
+}
+
+.main-chat {
+  width: 75%;
+}
