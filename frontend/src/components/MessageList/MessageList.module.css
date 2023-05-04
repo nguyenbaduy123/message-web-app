@@ -1,0 +1,17 @@
+.container {
+  height: 600px;
+  overflow-y: auto;
+}
+
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: var(--dark2);
+  border-radius: 5px;
+}

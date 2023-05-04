@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  margin: 10px;
+}
+
+.text {
+  background-color: rgb(39, 84, 136);
+  padding: 6px;
+  border-radius: 10px;
+  max-width: 60%;
+  overflow: visible;
+  overflow-wrap: break-word;
+}
+
+.me {
+  justify-content: flex-end;
+}
