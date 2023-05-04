@@ -6,10 +6,13 @@
 
 .main-content {
   display: flex;
+  height: 100%;
 }
 
 .left-bar {
   width: 25%;
+  height: 100%;
+  border-right: 1px solid var(--border1);
 }
 
 .main-chat {

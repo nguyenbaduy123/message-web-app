@@ -6,7 +6,7 @@ const s = classNames.bind(styles)
 
 const MessageListItem = ({ message }) => {
   return (
-    <div className={s('container', { me: false })}>
+    <div className={s('container', { me: message.sender === '1' })}>
       <span className={s('text')}>{message.message}</span>
     </div>
   )
