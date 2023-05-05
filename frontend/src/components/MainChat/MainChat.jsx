@@ -3,35 +3,57 @@ import { Input } from 'antd'
 
 import styles from './MainChat.module.css'
 import MessageList from '../MessageList/MessageList'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import io from 'socket.io-client'
 
 const s = classNames.bind(styles)
+const socket = io.connect('http://localhost:8080')
 
 const MainChat = ({ conversations, setConversations, currentConversation }) => {
   const [currentText, setCurrentText] = useState('')
+  const [messageArray, setMessageArray] = useState(currentConversation.messages)
+
+  useEffect(() => {
+    console.log(messageArray)
+  }, [messageArray])
+
+  useEffect(() => {
+    socket.on('receive_message', (data) => {
+      console.log(socket.id)
+      setMessageArray([...messageArray, data])
+
+      setConversations((prevConversations) =>
+        prevConversations.map((conv) =>
+          conv.id === currentConversation.id
+            ? {
+                ...conv,
+                messages: [
+                  ...conv.messages,
+                  {
+                    id: Math.random() + '',
+                    sender: `${socket.id === data.socket_id ? '1' : '2'}`,
+                    message: data.message,
+                  },
+                ],
+              }
+            : conv
+        )
+      )
+      setCurrentText('')
+      // alert(data.message)
+    })
+  }, [socket])
 
   const handleSend = () => {
     let text = currentText.trim()
     if (text === '') return
-
-    setConversations((prevConversations) =>
-      prevConversations.map((conv) =>
-        conv.id === currentConversation.id
-          ? {
-              ...conv,
-              messages: [
-                ...conv.messages,
-                {
-                  id: Math.random() + '',
-                  sender: '1',
-                  message: text,
-                },
-              ],
-            }
-          : conv
-      )
-    )
-    setCurrentText('')
+    const currentMsg = {
+      id: 'message3',
+      sender: '1',
+      message: text,
+      socket_id: socket.id,
+    }
+    socket.emit('send_message', currentMsg)
   }
 
   return (

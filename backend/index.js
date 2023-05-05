@@ -12,36 +12,32 @@ const server = http.createServer(app);
 app.use(cors());
 
 const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"],
-    }
-})
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
 
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`);
 
-// io.on("connection", (socket) => {
-//   const id = socket.handshake.query.id;
-//   socket.join(id);
-
-//   console.log(id);
-// });
+  socket.on("send_message", (data) => {
+    // socket.broadcast.emit("receive_message", data);
+    io.emit("receive_message", data);
+  });
+});
 
 server.listen(port, () => {
-    const userInfo = {
-        id: 12,
-        name: 5,
-        email: "",
-        password: 1234,
-        gender: "Nam",
-        age: 20,
-        registeredAt: "",
-    }
-
-    const user = new User(userInfo);
-
-    user.save();
-
-    // dbQuery("SELECT * FROM student", [], (data) => console.log(data))
-
-
+  // const userInfo = {
+  //     id: 12,
+  //     name: 5,
+  //     email: "",
+  //     password: 1234,
+  //     gender: "Nam",
+  //     age: 20,
+  //     registeredAt: "",
+  // }
+  // const user = new User(userInfo);
+  // user.save();
+  // dbQuery("SELECT * FROM student", [], (data) => console.log(data))
 });
