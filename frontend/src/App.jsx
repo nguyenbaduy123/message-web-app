@@ -5,6 +5,8 @@ import styles from './App.module.css'
 import Layout from './components/Layout/Layout'
 import LeftBar from './components/LeftBar/LeftBar'
 import MainChat from './components/MainChat/MainChat'
+import {Login}  from './components/Auth/Login'
+import {Register}  from './components/Auth/Register'
 
 const s = classNames.bind(styles)
 
@@ -43,27 +45,39 @@ function App() {
     )
   }
 
+  const [currentForm, setCurrentForm] = useState('login')
+  const toggleForm = (formName) => {
+    setCurrentForm(formName);
+  };
+
+
   return (
-    <div className={s('container')}>
-      <Layout>
-        <main className={s('main-content')}>
-          <div className={s('left-bar')}>
-            <LeftBar
-              currentConversationId={currentConversationId}
-              setCurrentConversationId={setCurrentConversationId}
-              conversations={conversations}
-            />
-          </div>
-          <div className={s('main-chat')}>
-            <MainChat
-              conversations={conversations}
-              setConversations={setConversations}
-              currentConversation={getCurrentConversation()}
-            />
-          </div>
-        </main>
-      </Layout>
-    </div>
+    // <div className={s('container')}>
+    //   <Layout>
+    //     <main className={s('main-content')}>
+    //       <div className={s('left-bar')}>
+    //         <LeftBar
+    //           currentConversationId={currentConversationId}
+    //           setCurrentConversationId={setCurrentConversationId}
+    //           conversations={conversations}
+    //         />
+    //       </div>
+    //       <div className={s('main-chat')}>
+    //         <MainChat
+    //           conversations={conversations}
+    //           setConversations={setConversations}
+    //           currentConversation={getCurrentConversation()}
+    //         />
+    //       </div>
+    //     </main>
+    //   </Layout>
+    // </div>
+    <>
+    {
+      currentForm === "login" ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch={toggleForm}/>
+    }
+    </>
+    
   )
 }
 
