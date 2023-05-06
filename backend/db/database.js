@@ -1,32 +1,45 @@
-const mysql = require('mysql');
+const mysql = require("mysql2/promise");
 
-const pool = mysql.createPool({
-    connectionLimit : 100,
-    host            : 'localhost',
-    user            : 'root',
-    password        : '',
-    database        : 'cnweb',
-})
+// const connection = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "cnweb",
+// });
 
-async function dbQuery(query, params, callback) {
-    pool.getConnection((err, connection) => {
-        if(err) throw err;
-        
-        connection.query(query, params, (err, rows) => {
-            if(err) {
-                console.log("Error");
-                connection.release();
-                throw err;
-            }
+async function query(sql, params) {
+  const con = await mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "cnweb",
+  });
 
-            callback(rows);
-            // console.log('Ok');
-            connection.release();
+  await con.connect();
 
-            return rows;
-        })    
-    })
+  try {
+    const [rows] = await con.execute(sql, params);
+    console.log(rows);
+
+    return rows;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  } finally {
+    con.end();
   }
-  
-  
-  module.exports = dbQuery;
+}
+
+// function dbQuery(query, params) {
+//   return new Promise((resolve, reject) => {
+//     pool.getConnection((err, connection) => {
+//       if (err) throw err;
+
+//       connection.query(query, params, (err, rows) => {
+//         return err ? reject(err) : resolve(rows);
+//       });
+//     });
+//   });
+// }
+
+module.exports = query;

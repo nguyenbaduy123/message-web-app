@@ -2,14 +2,16 @@ const { Server } = require("socket.io");
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
-const User = require("./models/User");
-const dbQuery = require("./db/database");
+const authRoute = require("./routes/Auth");
+const query = require("./db/database");
 require("dotenv").config();
 
 const port = process.env.PORT || 8080;
 const app = express();
 const server = http.createServer(app);
+app.use(express.json());
 app.use(cors());
+app.use("/api", authRoute);
 
 const io = new Server(server, {
   cors: {
@@ -28,16 +30,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, () => {
-  // const userInfo = {
-  //     id: 12,
-  //     name: 5,
-  //     email: "",
-  //     password: 1234,
-  //     gender: "Nam",
-  //     age: 20,
-  //     registeredAt: "",
-  // }
-  // const user = new User(userInfo);
-  // user.save();
-  // dbQuery("SELECT * FROM student", [], (data) => console.log(data))
+  console.log(`App running at port ${port}`);
 });
