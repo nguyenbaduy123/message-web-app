@@ -1,15 +1,16 @@
+import { useContext } from 'react'
 import classNames from 'classnames/bind'
 import { Avatar } from 'antd'
 
 import styles from './Card.module.css'
+import { ChatContext } from '../../context/ChatContext'
 
 const s = classNames.bind(styles)
 
-const Card = ({
-  conversation,
-  currentConversationId,
-  setCurrentConversationId,
-}) => {
+const Card = ({ conversation }) => {
+  const { currentConversationId, setCurrentConversationId } =
+    useContext(ChatContext)
+
   return (
     <div
       className={s('container', {

@@ -3,15 +3,21 @@ import { Input } from 'antd'
 
 import styles from './MainChat.module.css'
 import MessageList from '../MessageList/MessageList'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
+import { ChatContext } from '../../context/ChatContext'
 
 const s = classNames.bind(styles)
 const socket = io.connect('http://localhost:8080')
 
-const MainChat = ({ conversations, setConversations, currentConversation }) => {
+const MainChat = () => {
+  const { conversations, setConversations, currentConversation } =
+    useContext(ChatContext)
+
   const [currentText, setCurrentText] = useState('')
   const [messageArray, setMessageArray] = useState(currentConversation.messages)
+
+  console.log(currentText)
 
   useEffect(() => {
     console.log(messageArray)
@@ -59,7 +65,7 @@ const MainChat = ({ conversations, setConversations, currentConversation }) => {
   return (
     <div className={s('container')}>
       <div>This is header</div>
-      <MessageList currentConversation={currentConversation} />
+      <MessageList />
       <Input
         className={s('input')}
         value={currentText}

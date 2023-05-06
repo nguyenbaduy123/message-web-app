@@ -1,12 +1,14 @@
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import classNames from 'classnames/bind'
 
 import MessageListItem from '../MessageListItem/MessageListItem'
 import styles from './MessageList.module.css'
+import { ChatContext } from '../../context/ChatContext'
 
 const s = classNames.bind(styles)
 
-const MessageList = ({ currentConversation }) => {
+const MessageList = () => {
+  const { currentConversation } = useContext(ChatContext)
   const containerRef = useRef(null)
 
   useEffect(() => {
