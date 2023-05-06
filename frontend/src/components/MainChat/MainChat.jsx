@@ -17,20 +17,15 @@ const MainChat = () => {
   const [currentText, setCurrentText] = useState('')
   const [messageArray, setMessageArray] = useState(currentConversation.messages)
 
-  console.log(currentText)
-
   useEffect(() => {
     console.log(messageArray)
   }, [messageArray])
 
   useEffect(() => {
     socket.on('receive_message', (data) => {
-      console.log(socket.id)
-      setMessageArray([...messageArray, data])
-
       setConversations((prevConversations) =>
         prevConversations.map((conv) =>
-          conv.id === currentConversation.id
+          data.conversationId === conv.id
             ? {
                 ...conv,
                 messages: [
@@ -46,14 +41,15 @@ const MainChat = () => {
         )
       )
       setCurrentText('')
-      // alert(data.message)
     })
   }, [socket])
 
   const handleSend = () => {
     let text = currentText.trim()
     if (text === '') return
+    console.log(currentConversation.id)
     const currentMsg = {
+      conversationId: currentConversation.id,
       id: 'message3',
       sender: '1',
       message: text,
