@@ -2,6 +2,8 @@
   max-width: 100%;
   background-color: rgb(49, 51, 56, 0.9);
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
 .main-content {

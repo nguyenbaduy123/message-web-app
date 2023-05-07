@@ -20,11 +20,13 @@ const Card = ({ conversation }) => {
     >
       <div className={s('information')}>
         <div className={s('avatar')}>
-          <Avatar src={conversation.avatar} />
+          <Avatar src={conversation.avatar} size={40} />
         </div>
         <div className={s('text')}>
           <div className={s('receiver')}>{conversation.groupName}</div>
-          <div className={s('last-message')}>{conversation.lastMessage}</div>
+          <div className={s('last-message')}>
+            {conversation.messages[conversation.messages.length - 1].message}
+          </div>
           <div className={s('time')}>10:00 am</div>
         </div>
       </div>

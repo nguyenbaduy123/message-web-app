@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind'
 import { Input, Menu } from 'antd'
+import { HiOutlineSearch } from 'react-icons/hi'
 
 import styles from './LeftBar.module.css'
 import { useContext, useState } from 'react'
@@ -18,7 +19,7 @@ function LeftBar() {
 
   return (
     <div className={s('container')}>
-      <Input />
+      <Input className={s('search-input')} prefix={<HiOutlineSearch />} />
       <div className="list-conversation">{renderListConverstion}</div>
     </div>
   )

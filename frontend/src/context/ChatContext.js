@@ -9,7 +9,6 @@ export const ChatContextProvider = ({ children }) => {
       id: 'test1',
       groupId: '2',
       groupName: 'Duy',
-      lastMessage: 'message 1',
       avatar:
         'https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png',
       messages: [
@@ -21,7 +20,6 @@ export const ChatContextProvider = ({ children }) => {
       id: 'test2',
       groupId: '3',
       groupName: 'Dyu',
-      lastMessage: 'message 2',
       avatar:
         'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80',
       messages: [
