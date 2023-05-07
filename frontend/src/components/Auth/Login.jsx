@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import styles from './Auth.css'
+import styles from './Auth.module.css'
+import classNames from 'classnames/bind'
+
+const s = classNames.bind(styles)
 
 export const Login = (props) => {
 
@@ -11,17 +14,17 @@ export const Login = (props) => {
     console.log(email);
   }
   return (
-    <div className="authForm " >
+    <div className= {s('authForm')} >
       <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input value={email} type="email" id='email' placeholder='abc@gmail.com' name='email' onChange={(e) => setEmail(e.target.value)} />
+      <form className={s('formRegister')} onSubmit={handleSubmit}>
+        <label className={s('formLabel')} htmlFor="email">Email</label>
+        <input className={s('formInput')} value={email} type="email" id='email' placeholder='abc@gmail.com' name='email' onChange={(e) => setEmail(e.target.value)} />
 
-        <label htmlFor="password">Password</label>
-        <input value={password} type="password" id='password' placeholder='********' name='password' onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Log In</button>
+        <label className={s('formLabel')} htmlFor="password">Password</label>
+        <input className={s('formInput')} value={password} type="password" id='password' placeholder='********' name='password' onChange={(e) => setPassword(e.target.value)} />
+        <button className={s('formButton')} type="submit">Log In</button>
       </form>
-      <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account</button>
+      <button className={s('link-btn')} onClick={() => props.onFormSwitch('register')}>Don't have an account</button>
     </div>
   )
 }

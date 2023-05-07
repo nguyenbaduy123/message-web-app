@@ -9,7 +9,7 @@
     background-image: linear-gradient(79deg, #7439db, #C66FBC 48%, #F7944D);
 }
 
-.authForm, form {
+.authForm, .formRegister, .formLogin {
     display: flex;
     flex-direction: column;
 }
@@ -24,19 +24,19 @@
     }
 }
 
-label {
+.formLabel {
     text-align: left;
     padding: 0.25rem 0;
 }
 
-input {
+.formInput {
     margin: 0.5rem 0;
     padding: 1rem;
     border: none;
     border-radius: 10px;
 }
 
-button {
+.formButton {
     border: none;
     background-color: white;
     padding: 12px;
@@ -46,7 +46,10 @@ button {
 }
 
 .link-btn {
+    margin: 5px;
+    border: none;
     background: none;
     color: white;
     text-decoration: underline;
+    cursor: pointer;
 }
