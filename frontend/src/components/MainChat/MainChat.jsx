@@ -20,7 +20,6 @@ const MainChat = () => {
     useContext(ChatContext)
 
   const [currentText, setCurrentText] = useState('')
-  const [rows, setRows] = useState(1)
 
   useEffect(() => {
     socket.on('receive_message', (data) => {
@@ -48,7 +47,6 @@ const MainChat = () => {
   const handleSend = () => {
     let text = currentText.trim()
     if (text === '') return
-    console.log(currentConversation.id)
     const currentMsg = {
       conversationId: currentConversation.id,
       id: 'message3',
@@ -60,25 +58,11 @@ const MainChat = () => {
   }
 
   const handleKeyDown = (event) => {
-    if (event.keyCode === 13 && !event.shiftKey) {
-      handleSend(event.target.value)
-    } else if (event.keyCode === 13 && event.shiftKey) {
-      setCurrentText(currentText + '\n')
-      setRows(Math.min(rows + 1, MAX_ROWS))
-      event.preventDefault()
-    } else if (
-      event.keyCode === 8 &&
-      currentText.charAt(currentText.length - 1) === '\n'
-    ) {
-      const trimmedValue = currentText.trim()
-      const newRows = trimmedValue.split('\n').length
-      setRows(Math.max(newRows, 1))
-    } else if (
-      event.keyCode === 8 &&
-      rows > 1 &&
-      currentText.length % (rows - 1) === 0
-    ) {
-      setRows(rows - 1)
+    if (event.keyCode === 13) {
+      if (!event.shiftKey) {
+        event.preventDefault()
+        handleSend(event.target.value)
+      }
     }
   }
 
@@ -104,7 +88,6 @@ const MainChat = () => {
       <TextArea
         className={s('input')}
         resize="none"
-        rows={rows}
         autoSize={{ minRows: 0, maxRows: MAX_ROWS }}
         value={currentText}
         onChange={(e) => setCurrentText(e.target.value)}
