@@ -17,9 +17,9 @@ function App() {
     setCurrentForm(formName)
   }
 
-  if (currentForm == 'login') {
+  if (currentForm === 'login') {
     return <Login onFormSwitch={toggleForm} />
-  } else if (currentForm == 'register') {
+  } else if (currentForm === 'register') {
     return <Register onFormSwitch={toggleForm} />
   } else {
     return (

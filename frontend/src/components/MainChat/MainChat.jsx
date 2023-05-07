@@ -16,8 +16,7 @@ const { TextArea } = Input
 const MAX_ROWS = 5
 
 const MainChat = () => {
-  const { conversations, setConversations, currentConversation } =
-    useContext(ChatContext)
+  const { setConversations, currentConversation } = useContext(ChatContext)
 
   const [currentText, setCurrentText] = useState('')
 
