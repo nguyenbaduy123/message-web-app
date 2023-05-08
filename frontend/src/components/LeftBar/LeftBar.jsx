@@ -1,17 +1,16 @@
 import classNames from 'classnames/bind'
-import { Input, Menu } from 'antd'
+import { Input } from 'antd'
 import { HiOutlineSearch } from 'react-icons/hi'
 
 import styles from './LeftBar.module.css'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import Card from '../Card/Card'
 import { ChatContext } from '../../context/ChatContext'
 
 const s = classNames.bind(styles)
 
 function LeftBar() {
-  const { currentConversationId, setCurrentConversationId, conversations } =
-    useContext(ChatContext)
+  const { conversations } = useContext(ChatContext)
 
   const renderListConverstion = conversations.map((conversation) => (
     <Card key={conversation.id} conversation={conversation} />
