@@ -4,31 +4,31 @@ const bcrypt = require("bcryptjs");
 class UserModel {
   constructor(user) {
     this.id = user.id || null;
-    this.username = user.name || null;
+    this.username = user.username || null;
     this.email = user.email || null;
     this.fullname = user.fullname || null;
     this.password = user.password || null;
     this.image_url = user.image_url || null;
-    this.role_id = user.role_id || null;
+    this.role_id = 2;
     this.created_at = user.created_at || null;
     this.refreshToken = user.refreshToken || null;
   }
 
   async save() {
-    await query("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?);", [
+    const hashedPassword = await bcrypt.hash(this.password, 10);
+    const result = await query("INSERT INTO users (username, email, fullname, password, image_url, role_id) VALUES (?, ?, ?, ?, ?, ?)", [
       this.username,
       this.email,
       this.fullname,
-      bcrypt.hash(this.password, 10),
+      hashedPassword,
       this.image_url,
       this.role_id,
-      this.created_at,
-      this.refreshToken,
     ]);
 
-    console.log(this.name);
-    console.log("Saved");
-    return true;
+    const insertedId = result[0].insertId;
+    const insertedUser = await query('SELECT * FROM users WHERE id = ?', [insertedId]);
+
+    return insertedUser[0];
   }
 
   static async findAll() {
@@ -36,9 +36,8 @@ class UserModel {
     const params = [];
 
     const rows = await query(sql, params);
-    console.log(rows);
 
-    return rows;
+    return rows[0];
   }
 
   async updateToken(id, refreshToken) {

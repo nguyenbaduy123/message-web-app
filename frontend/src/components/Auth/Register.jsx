@@ -1,17 +1,39 @@
 import React, { useState } from 'react'
 import styles from './Auth.module.css'
 import classNames from 'classnames/bind'
+import { notification } from 'antd'
+
+import userApi from '../../apis/userApi'
 
 const s = classNames.bind(styles)
 
 export const Register = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
+  const [userName, setUserName] = useState('')
+  const [fullName, setFullName] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(email)
+    try {
+      const data = await userApi.post('/', {
+        email: email,
+        username: userName,
+        password: password,
+        fullname: fullName,
+      })
+      if (data.status === 200) {
+        notification.success({
+          message: 'Register',
+          description: 'Success',
+          placement: 'top',
+          duration: 1,
+        })
+        props.onFormSwitch('login')
+      }
+    } catch (error) {
+      console.error('Register error: ', error)
+    }
   }
 
   return (
@@ -19,16 +41,28 @@ export const Register = (props) => {
       <div className={s('authForm')}>
         <h1>Register</h1>
         <form className={s('formRegister')} onSubmit={handleSubmit}>
-          <label className={s('formLabel')} htmlFor="name">
+          <label className={s('formLabel')} htmlFor="username">
+            User Name
+          </label>
+          <input
+            className={s('formInput')}
+            value={userName}
+            name="username"
+            onChange={(e) => setUserName(e.target.value)}
+            id="username"
+            placeholder="User Name"
+          />
+
+          <label className={s('formLabel')} htmlFor="fullname">
             Full Name
           </label>
           <input
             className={s('formInput')}
-            value={name}
-            name="name"
-            onChange={(e) => setName(e.target.value)}
-            id="name"
-            placeholder="full Name"
+            value={fullName}
+            name="fullname"
+            onChange={(e) => setFullName(e.target.value)}
+            id="fullname"
+            placeholder="Full Name"
           />
 
           <label className={s('formLabel')} htmlFor="email">
