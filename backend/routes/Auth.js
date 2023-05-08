@@ -2,7 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/auth");
 const generateToken = require("../auth/JwtAuth");
-const { getAllUser } = require("../controllers/UserController");
+const { getAllUser, saveUser } = require("../controllers/UserController");
 
 const router = express.Router();
 
@@ -44,7 +44,7 @@ const updateRefreshToken = (username, refreshToken) => {
   });
 };
 
-router.route("/user").get(getAllUser);
+router.route("/user").get(getAllUser).post(saveUser);
 
 router.route("/posts").get(verifyToken, (req, res) => {
   res.json(posts.filter((posts) => posts.userId === req.userId));

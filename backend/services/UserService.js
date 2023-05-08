@@ -1,10 +1,13 @@
 const UserModel = require("../models/UserModel");
-const query = require("../db/database");
 
 exports.getAllUser = async () => {
-  return await query("SELECT * FROM student", []);
+  return await UserModel.findAll();
 };
 
 exports.updateToken = async (id, user) => {
   return await UserModel.updateToken(id, user);
+};
+
+exports.saveUser = async (user) => {
+  return await user.save();
 };
