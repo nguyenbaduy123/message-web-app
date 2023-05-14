@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+
 import styles from './Auth.module.css'
 import classNames from 'classnames/bind'
+import userApi from '../../apis/userApi'
+import { notification } from 'antd'
 
 const s = classNames.bind(styles)
 
@@ -8,10 +11,26 @@ export const Login = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(email)
-    props.onFormSwitch('chat')
+    try {
+      const data = await userApi.post('/login', {
+        email: email,
+        password: password
+      })
+      if(!data.data.error) {
+        props.onFormSwitch('chat')
+      } else {
+        notification.error({
+          message: 'Login Failed!',
+          description: data.data.error,
+          placement: 'top',
+          duration: 1,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
   return (
     <div className={s('container')}>

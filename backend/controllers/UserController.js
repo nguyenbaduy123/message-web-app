@@ -1,5 +1,6 @@
 const UserModel = require("../models/UserModel");
 const userService = require("../services/UserService");
+const jwt = require("jsonwebtoken")
 
 exports.getAllUser = async (req, res) => {
   try {
@@ -27,8 +28,21 @@ exports.saveUser = async (req, res) => {
   }
 };
 
-// exports.updateToken = async (req, res) => {
-//     try {
-//         const user
-//     }
-// }
+exports.login = async (req, res) => {
+  const email = req.body.email
+  const password = req.body.password
+  const result = await UserModel.login(email, password)
+  if(result.success) {
+    const maxAge = 3 * 24 * 60 * 60;
+    const token = jwt.sign({ email: email }, 'secret', { expiresIn: '24hr' });
+    res.cookie('jwt', token, {
+      maxAge: maxAge * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+    });
+    res.json({user: result.user});
+  } else {
+    res.json({error: result.error})
+  }
+}
