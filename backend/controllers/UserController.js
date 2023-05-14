@@ -32,7 +32,7 @@ exports.login = async (req, res) => {
   const email = req.body.email
   const password = req.body.password
   const result = await UserModel.login(email, password)
-  if(result) {
+  if(result.success) {
     const maxAge = 3 * 24 * 60 * 60;
     const token = jwt.sign({ email: email }, 'secret', { expiresIn: '24hr' });
     res.cookie('jwt', token, {
@@ -41,8 +41,8 @@ exports.login = async (req, res) => {
       secure: true,
       sameSite: 'None',
     });
-    res.status(200).json({ result });
+    res.json({user: result.user});
   } else {
-    res.sendStatus(404).json({data: "no account"})
+    res.json({error: result.error})
   }
 }

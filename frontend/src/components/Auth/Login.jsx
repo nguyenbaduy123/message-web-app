@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import styles from './Auth.module.css'
 import classNames from 'classnames/bind'
 import userApi from '../../apis/userApi'
+import { notification } from 'antd'
 
 const s = classNames.bind(styles)
 
@@ -17,9 +18,16 @@ export const Login = (props) => {
         email: email,
         password: password
       })
-    if(data.status === 200) {
-      props.onFormSwitch('chat')
-    }
+      if(!data.data.error) {
+        props.onFormSwitch('chat')
+      } else {
+        notification.error({
+          message: 'Login Failed!',
+          description: data.data.error,
+          placement: 'top',
+          duration: 1,
+        })
+      }
     } catch (error) {
       console.error(error)
     }

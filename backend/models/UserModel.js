@@ -50,11 +50,11 @@ class UserModel {
     if (user) {
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
-        return user;
+        return {success: true, user: user};
       }
-      console.error('Incorrect password');
+      return {success: false, error: "Incorrect password"};
     }
-    console.error('Incorrect email');
+    return {success: false, error: "Incorrect email"};
   }
   
 

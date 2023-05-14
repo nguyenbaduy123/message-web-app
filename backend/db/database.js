@@ -1,4 +1,5 @@
 const mysql = require("mysql2/promise");
+const knexConfig = require('../knexfile');
 
 // const connection = mysql.createConnection({
 //   host: "localhost",
@@ -7,15 +8,7 @@ const mysql = require("mysql2/promise");
 //   database: "cnweb",
 // });
 
-const knex = require('knex')({
-  client: 'mysql2',
-  connection: {
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'cnweb'
-  }
-});
+const knex = require('knex')(knexConfig.development);
 
 async function query(sql, params) {
   try {
