@@ -2,7 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/auth");
 const generateToken = require("../auth/JwtAuth");
-const { getAllUser, saveUser } = require("../controllers/UserController");
+const { getAllUser, saveUser, login } = require("../controllers/UserController");
 
 const router = express.Router();
 
@@ -44,22 +44,24 @@ const updateRefreshToken = (username, refreshToken) => {
   });
 };
 
-router.route("/user").get(getAllUser).post(saveUser);
+router.route("/").get(getAllUser).post(saveUser);
+router.route("/login").post(login)
+
+//   (req, res) => {
+//   const username = req.body.username;
+//   const user = users.find((user) => user.username === username);
+
+//   if (!user) return res.sendStatus(401);
+
+//   const tokens = generateToken(user);
+//   updateRefreshToken(username, tokens.refreshToken);
+
+//   res.json({ tokens });
+// }
+// );
 
 router.route("/posts").get(verifyToken, (req, res) => {
   res.json(posts.filter((posts) => posts.userId === req.userId));
-});
-
-router.route("/auth/login").post((req, res) => {
-  const username = req.body.username;
-  const user = users.find((user) => user.username === username);
-
-  if (!user) return res.sendStatus(401);
-
-  const tokens = generateToken(user);
-  updateRefreshToken(username, tokens.refreshToken);
-
-  res.json({ tokens });
 });
 
 router.route("/auth/token").post((req, res) => {

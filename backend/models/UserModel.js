@@ -1,5 +1,9 @@
 const query = require("../db/database");
 const bcrypt = require("bcryptjs");
+const knex = require('knex');
+const knexConfig = require('../knexfile');
+
+const db = knex(knexConfig.development);
 
 class UserModel {
   constructor(user) {
@@ -40,6 +44,20 @@ class UserModel {
     return rows[0];
   }
 
+  static login = async (email, password) => {
+    const user = await db('users').where('email', email).first();
+
+    if (user) {
+      const auth = await bcrypt.compare(password, user.password);
+      if (auth) {
+        return user;
+      }
+      console.error('Incorrect password');
+    }
+    console.error('Incorrect email');
+  }
+  
+
   async updateToken(id, refreshToken) {
     const rows = await query(
       "UPDATE student SET refreshToken = ? WHERE id = ?",
@@ -52,4 +70,4 @@ class UserModel {
   }
 }
 
-module.exports = UserModel;
+module.exports = UserModel
