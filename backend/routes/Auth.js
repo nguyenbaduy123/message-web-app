@@ -5,40 +5,10 @@ const generateToken = require("../auth/JwtAuth");
 const {
   getAllUser,
   saveUser,
-  login,
-  getPrivateMessage,
-  getAllPrivateMessage,
+  login
 } = require("../controllers/UserController");
 
-const { saveMsg } = require("../controllers/PrivateMessageController");
-
 const router = express.Router();
-
-let users = [
-  {
-    id: 1,
-    username: "Henry",
-    refreshToken: null,
-  },
-
-  {
-    id: 2,
-    username: "Darwin",
-    refreshToken: null,
-  },
-];
-
-const posts = [
-  {
-    userId: 1,
-    post: "Post Henry",
-  },
-
-  {
-    userId: 2,
-    post: "Post Darwin",
-  },
-];
 
 const updateRefreshToken = (username, refreshToken) => {
   users = users.map((user) => {
@@ -67,8 +37,6 @@ router.route("/login").post(login);
 //   res.json({ tokens });
 // }
 // );
-
-router.route("/msg/private").get(getAllPrivateMessage).post(saveMsg);
 
 router.route("/posts").get(verifyToken, (req, res) => {
   res.json(posts.filter((posts) => posts.userId === req.userId));

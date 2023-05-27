@@ -1,5 +1,9 @@
 const query = require("../db/database");
-const bcrypt = require("bcryptjs");
+const knex = require('knex')
+
+const knexConfig = require("../knexfile");
+
+const db = knex(knexConfig.development);
 
 class PrivateMessageModel {
   constructor(msg) {
@@ -13,8 +17,8 @@ class PrivateMessageModel {
 
   async save() {
     const result = await query(
-      "INSERT INTO private_message (from_id, to_id, message, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
-      [this.from_id, this.to_id, this.message, this.created_at, this.updated_at]
+      "INSERT INTO private_message (from_id, to_id, message) VALUES (?, ?, ?);",
+      [this.from_id, this.to_id, this.message]
     );
 
     console.log("Saved");
@@ -40,6 +44,39 @@ class PrivateMessageModel {
     console.log(rows);
 
     return rows;
+  }
+
+  static async getPrivateMessage(id) {
+    const user = await db("users").where("id", id).first();
+    const msg = await db("private_message")
+      .where("from_id", id)
+      .orWhere("to_id", id);
+
+    const data = { ...user, messages: msg };
+
+    if (data) return data;
+  }
+
+  static async getAllPrivateMessage(id) {
+    const users = await db("users").whereNot("id", id);
+
+    let allData = [];
+
+    const res = await Promise.all(
+      users.map(async (user) => {
+        const msg = await db("private_message")
+          .where("from_id", user.id)
+          .andWhere("to_id", id)
+          .orWhere("to_id", user.id)
+          .andWhere("from_id", id);
+
+        return { ...user, messages: msg };
+      })
+    );
+
+    res.map((data) => (allData = [...allData, data]));
+
+    if (allData) return allData;
   }
 }
 

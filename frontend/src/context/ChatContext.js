@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import userApi from '../apis/userApi'
+import messageApi from '../apis/messageApi'
 
 export const ChatContext = createContext()
 
@@ -14,15 +14,13 @@ export const ChatContextProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       try {
-        const res = await userApi.get('/msg/private', {
+        const res = await messageApi.get('/private', {
           params: {
             id: sessionStorage.getItem('id'),
           },
         })
-
-        console.log([...res.data])
         setConversations([...res.data])
         setCurrentConversationId(res.data[0].id)
       } catch (error) {

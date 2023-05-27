@@ -34,9 +34,9 @@ exports.login = async (req, res) => {
   const result = await UserModel.login(email, password);
   if (result.success) {
     const maxAge = 3 * 24 * 60 * 60;
-    const token = jwt.sign({ email: email }, "secret", { expiresIn: "24hr" });
+    const token = jwt.sign({ email: email }, "secret", { expiresIn: "72hr" });
     res.cookie("jwt", token, {
-      maxAge: maxAge * 1000,
+      maxAge: maxAge,
       httpOnly: true,
       secure: true,
       sameSite: "None",
@@ -45,18 +45,4 @@ exports.login = async (req, res) => {
   } else {
     res.json({ error: result.error });
   }
-};
-
-exports.getPrivateMessage = async (req, res) => {
-  const id = req.query.id;
-  const result = await UserModel.getPrivateMessage(id);
-
-  if (result) return res.json(result);
-};
-
-exports.getAllPrivateMessage = async (req, res) => {
-  const id = req.query.id;
-  const result = await UserModel.getAllPrivateMessage(id);
-
-  if (result) return res.json(result);
 };

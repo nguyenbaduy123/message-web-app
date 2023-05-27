@@ -72,39 +72,6 @@ class UserModel {
 
     return rows;
   }
-
-  static async getPrivateMessage(id) {
-    const user = await db("users").where("id", id).first();
-    const msg = await db("private_message")
-      .where("from_id", id)
-      .orWhere("to_id", id);
-
-    const data = { ...user, messages: msg };
-
-    if (data) return data;
-  }
-
-  static async getAllPrivateMessage(id) {
-    const users = await db("users").whereNot("id", id);
-
-    let allData = [];
-
-    const res = await Promise.all(
-      users.map(async (user) => {
-        const msg = await db("private_message")
-          .where("from_id", user.id)
-          .andWhere("to_id", id)
-          .orWhere("to_id", user.id)
-          .andWhere("from_id", id);
-
-        return { ...user, messages: msg };
-      })
-    );
-
-    res.map((data) => (allData = [...allData, data]));
-
-    if (allData) return allData;
-  }
 }
 
 module.exports = UserModel;

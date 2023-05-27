@@ -26,3 +26,17 @@ exports.saveMsg = async (req, res) => {
     return res.sendStatus(500);
   }
 };
+
+exports.getPrivateMessage = async (req, res) => {
+  const id = req.query.id;
+  const result = await PrivateMessageModel.getPrivateMessage(id);
+
+  if (result) return res.json(result);
+};
+
+exports.getAllPrivateMessage = async (req, res) => {
+  const id = req.query.id;
+  const result = await PrivateMessageModel.getAllPrivateMessage(id);
+
+  if (result) return res.json(result);
+};

@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const http = require("http");
 
 const authRoute = require("./routes/Auth");
+const messageRoute = require("./routes/Message")
 require("dotenv").config();
 
 const port = process.env.PORT || 8080;
@@ -20,6 +21,7 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/user", authRoute);
+app.use("/api/msg", messageRoute)
 
 const io = new Server(server, {
   cors: {

@@ -8,7 +8,7 @@ import { FaEllipsisH } from 'react-icons/fa'
 import styles from './MainChat.module.css'
 import MessageList from '../MessageList/MessageList'
 import { ChatContext } from '../../context/ChatContext'
-import userApi from '../../apis/userApi'
+import messageApi from '../../apis/messageApi'
 
 const s = classNames.bind(styles)
 const socket = io.connect('http://localhost:8080')
@@ -56,7 +56,7 @@ const MainChat = () => {
     socket.emit('send_message', currentMsg)
     ;(async () => {
       try {
-        const data = userApi.post('/msg/private', currentMsg)
+        const data = messageApi.post('/private', currentMsg)
         console.log('Insert success')
       } catch (error) {
         console.log(error)

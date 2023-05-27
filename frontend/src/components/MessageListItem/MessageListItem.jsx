@@ -9,11 +9,9 @@ const MessageListItem = ({ message }) => {
   return (
     <div
       className={s('container', {
-        me: message.from_id === sessionStorage.getItem('id'),
+        me: message.from_id == sessionStorage.getItem('id'),
       })}
     >
-      <div>{message.from_id}</div>
-      <div>{sessionStorage.getItem('id')}</div>
       <span
         className={s('text')}
         dangerouslySetInnerHTML={{ __html: displayMessage }}
