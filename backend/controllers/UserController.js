@@ -1,6 +1,6 @@
 const UserModel = require("../models/UserModel");
 const userService = require("../services/UserService");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
 exports.getAllUser = async (req, res) => {
   try {
@@ -29,20 +29,34 @@ exports.saveUser = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const email = req.body.email
-  const password = req.body.password
-  const result = await UserModel.login(email, password)
-  if(result.success) {
+  const email = req.body.email;
+  const password = req.body.password;
+  const result = await UserModel.login(email, password);
+  if (result.success) {
     const maxAge = 3 * 24 * 60 * 60;
-    const token = jwt.sign({ email: email }, 'secret', { expiresIn: '24hr' });
-    res.cookie('jwt', token, {
+    const token = jwt.sign({ email: email }, "secret", { expiresIn: "24hr" });
+    res.cookie("jwt", token, {
       maxAge: maxAge * 1000,
       httpOnly: true,
       secure: true,
-      sameSite: 'None',
+      sameSite: "None",
     });
-    res.json({user: result.user});
+    res.json({ user: result.user });
   } else {
-    res.json({error: result.error})
+    res.json({ error: result.error });
   }
-}
+};
+
+exports.getPrivateMessage = async (req, res) => {
+  const id = req.query.id;
+  const result = await UserModel.getPrivateMessage(id);
+
+  if (result) return res.json(result);
+};
+
+exports.getAllPrivateMessage = async (req, res) => {
+  const id = req.query.id;
+  const result = await UserModel.getAllPrivateMessage(id);
+
+  if (result) return res.json(result);
+};

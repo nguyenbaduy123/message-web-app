@@ -18,9 +18,9 @@ exports.saveMsg = async (req, res) => {
     const data = req.body;
     const msg = new PrivateMessageModel(data);
 
-    const result = await PrivateMessageModel.saveMsg(msg);
+    const result = await PrivateMessageService.saveMsg(msg);
 
-    return res.send(result);
+    return res.json(result);
   } catch (err) {
     console.log(err);
     return res.sendStatus(500);

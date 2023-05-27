@@ -16,9 +16,11 @@ export const Login = (props) => {
     try {
       const data = await userApi.post('/login', {
         email: email,
-        password: password
+        password: password,
       })
-      if(!data.data.error) {
+      if (!data.data.error) {
+        sessionStorage.setItem('username', data.data.user.fullname)
+        sessionStorage.setItem('id', data.data.user.id)
         props.onFormSwitch('chat')
       } else {
         notification.error({

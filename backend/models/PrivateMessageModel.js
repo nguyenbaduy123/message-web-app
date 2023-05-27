@@ -4,25 +4,21 @@ const bcrypt = require("bcryptjs");
 class PrivateMessageModel {
   constructor(msg) {
     this.id = msg.id || null;
-    this.from_id = msg.group_id || null;
-    this.to_id = msg.user_id || null;
+    this.from_id = msg.from_id || null;
+    this.to_id = msg.to_id || null;
     this.message = msg.message || null;
     this.created_at = msg.created_at || null;
     this.updated_at = msg.updated_at || null;
   }
 
   async save() {
-    await query("INSERT INTO group_message VALUES (?, ?, ?, ?, ?);", [
-      this.from_id,
-      this.to_id,
-      this.message,
-      this.created_at,
-      this.updated_at,
-    ]);
+    const result = await query(
+      "INSERT INTO private_message (from_id, to_id, message, created_at, updated_at) VALUES (?, ?, ?, ?, ?);",
+      [this.from_id, this.to_id, this.message, this.created_at, this.updated_at]
+    );
 
-    console.log(this.message);
     console.log("Saved");
-    return true;
+    return result;
   }
 
   static async findAll() {
