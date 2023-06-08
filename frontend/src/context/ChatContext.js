@@ -11,6 +11,7 @@ export const ChatContextProvider = ({ children }) => {
     accessToken: '',
     refreshToken: '',
   })
+  const [groupPopUp, setGroupPopUp] = useState(false)
   const navigate = useNavigate()
 
   const getCurrentConversation = () => {
@@ -37,7 +38,7 @@ export const ChatContextProvider = ({ children }) => {
         }
       })()
     }
-  }, [navigate])
+  }, [])
 
   return (
     <ChatContext.Provider
@@ -49,6 +50,8 @@ export const ChatContextProvider = ({ children }) => {
         currentConversation: getCurrentConversation(),
         token,
         setToken,
+        groupPopUp,
+        setGroupPopUp,
       }}
     >
       {children}

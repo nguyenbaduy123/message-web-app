@@ -8,6 +8,7 @@ import { ChatContextProvider } from './context/ChatContext'
 import { Login } from './components/Auth/Login'
 import { Register } from './components/Auth/Register'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Group from './components/Group/Group'
 
 const s = classNames.bind(styles)
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
               </div>
               <div className={s('main-chat')}>
                 <MainChat />
+                <Group />
               </div>
             </main>
           </Layout>

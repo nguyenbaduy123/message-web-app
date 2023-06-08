@@ -6,13 +6,15 @@ import userApi from '../../apis/userApi'
 import { notification } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ChatContext } from '../../context/ChatContext'
+import messageApi from '../../apis/messageApi'
 
 const s = classNames.bind(styles)
 
 export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { token, setToken } = useContext(ChatContext)
+  const { token, setToken, setConversations, setCurrentConversationId } =
+    useContext(ChatContext)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -31,6 +33,19 @@ export const Login = () => {
           accessToken: data.data.accessToken,
           refreshToken: data.data.refreshToken,
         })
+        ;(async () => {
+          try {
+            const res = await messageApi.get('/private', {
+              params: {
+                id: sessionStorage.getItem('id'),
+              },
+            })
+            setConversations([...res.data])
+            setCurrentConversationId(res.data[0].id)
+          } catch (error) {
+            console.log(error)
+          }
+        })()
         navigate('/')
       } else {
         notification.error({
