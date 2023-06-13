@@ -4,12 +4,14 @@ import classNames from 'classnames/bind'
 import { ChatContext } from '../../context/ChatContext'
 import { IconContext } from 'react-icons'
 import { BsX } from 'react-icons/bs'
+import { notification } from 'antd'
+import messageApi from '../../apis/messageApi'
 
 const s = classNames.bind(styles)
 
 const Group = () => {
   const { groupPopUp, setGroupPopUp, conversations } = useContext(ChatContext)
-  const [formValue, setFormValue] = useState({})
+  const [groupName, setGroupName] = useState('')
   const [memberList, setMemberList] = useState()
   const [choosenMember, setChoosenMember] = useState([])
   const memberRef = useRef()
@@ -30,7 +32,7 @@ const Group = () => {
     const name = e.target.name
     const value = e.target.value
 
-    setFormValue({ ...formValue, groupname: value })
+    setGroupName(value)
   }
 
   const handleMember = (e) => {
@@ -66,9 +68,37 @@ const Group = () => {
   }
 
   const cancelForm = () => {
-    setFormValue({})
+    setGroupName('')
     setChoosenMember([])
     setGroupPopUp(!groupPopUp)
+  }
+
+  const createGroup = async () => {
+    if (groupName.trim() === '') {
+      notification.error({
+        message: 'Login Failed!',
+        description: 'Chưa nhập tên nhóm',
+        placement: 'top',
+        duration: 1,
+      })
+    } else {
+      const data = await messageApi.post('new-group', {
+        name: groupName,
+        number_member: choosenMember.length,
+      })
+
+      if (data) {
+        notification.success({
+          message: 'Create group',
+          description: 'Success',
+          placement: 'top',
+          duration: 1,
+        })
+      }
+      setGroupName('')
+      setChoosenMember([])
+      setGroupPopUp(!groupPopUp)
+    }
   }
 
   return groupPopUp ? (
@@ -152,7 +182,7 @@ const Group = () => {
 
         <div className={s('group-btn')}>
           <button onClick={cancelForm}>Hủy</button>
-          <button>Xác nhận</button>
+          <button onClick={createGroup}>Xác nhận</button>
         </div>
       </form>
     </div>
