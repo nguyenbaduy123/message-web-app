@@ -18,8 +18,8 @@ const MessageList = () => {
 
   return (
     <div className={s('container')} ref={containerRef}>
-      {currentConversation?.messages.map((message, index) => (
-        <MessageListItem key={index} message={message} />
+      {currentConversation.messages.map((message) => (
+        <MessageListItem key={message.id} message={message} />
       ))}
     </div>
   )

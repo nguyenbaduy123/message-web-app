@@ -8,7 +8,6 @@ import { FaEllipsisH } from 'react-icons/fa'
 import styles from './MainChat.module.css'
 import MessageList from '../MessageList/MessageList'
 import { ChatContext } from '../../context/ChatContext'
-import messageApi from '../../apis/messageApi'
 
 const s = classNames.bind(styles)
 const socket = io.connect('http://localhost:8080')
@@ -17,24 +16,25 @@ const { TextArea } = Input
 const MAX_ROWS = 5
 
 const MainChat = () => {
-  const userId = sessionStorage.getItem('id')
   const { setConversations, currentConversation } = useContext(ChatContext)
 
   const [currentText, setCurrentText] = useState('')
 
   useEffect(() => {
-    socket.emit('connected', sessionStorage.getItem('id'))
-  }, [])
-
-  useEffect(() => {
     socket.on('receive_message', (data) => {
-      console.log(data)
       setConversations((prevConversations) =>
         prevConversations.map((conv) =>
-          data.to_id === conv.id || data.from_id === conv.id
+          data.conversationId === conv.id
             ? {
                 ...conv,
-                messages: [...conv.messages, { ...data }],
+                messages: [
+                  ...conv.messages,
+                  {
+                    id: Math.random() + '',
+                    sender: `${socket.id === data.socket_id ? '1' : '2'}`,
+                    message: data.message,
+                  },
+                ],
               }
             : conv
         )
@@ -47,21 +47,13 @@ const MainChat = () => {
     let text = currentText.trim()
     if (text === '') return
     const currentMsg = {
-      from_id: parseInt(sessionStorage.getItem('id')),
-      to_id: currentConversation.id,
+      conversationId: currentConversation.id,
+      id: 'message3',
+      sender: '1',
       message: text,
-      created_at: new Date(),
-      updated_at: new Date(),
+      socket_id: socket.id,
     }
     socket.emit('send_message', currentMsg)
-    ;(async () => {
-      try {
-        const data = messageApi.post('/private', currentMsg)
-        console.log('Insert success')
-      } catch (error) {
-        console.log(error)
-      }
-    })()
   }
 
   const handleKeyDown = (event) => {
@@ -78,9 +70,9 @@ const MainChat = () => {
       <div>
         <div className={s('header')}>
           <div className={s('group')}>
-            <Avatar src={currentConversation?.image_url} size={52} />
+            <Avatar src={currentConversation.avatar} size={52} />
             <div className={s('info-text')}>
-              <div className={s('name')}>{currentConversation?.username}</div>
+              <div className={s('name')}>{currentConversation.groupName}</div>
               <div className={s('state')}>Online</div>
             </div>
           </div>

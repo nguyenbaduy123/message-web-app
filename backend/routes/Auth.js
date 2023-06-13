@@ -2,13 +2,35 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/auth");
 const generateToken = require("../auth/JwtAuth");
-const {
-  getAllUser,
-  saveUser,
-  login
-} = require("../controllers/UserController");
+const { getAllUser, saveUser, login } = require("../controllers/UserController");
 
 const router = express.Router();
+
+let users = [
+  {
+    id: 1,
+    username: "Henry",
+    refreshToken: null,
+  },
+
+  {
+    id: 2,
+    username: "Darwin",
+    refreshToken: null,
+  },
+];
+
+const posts = [
+  {
+    userId: 1,
+    post: "Post Henry",
+  },
+
+  {
+    userId: 2,
+    post: "Post Darwin",
+  },
+];
 
 const updateRefreshToken = (username, refreshToken) => {
   users = users.map((user) => {
@@ -23,7 +45,7 @@ const updateRefreshToken = (username, refreshToken) => {
 };
 
 router.route("/").get(getAllUser).post(saveUser);
-router.route("/login").post(login);
+router.route("/login").post(login)
 
 //   (req, res) => {
 //   const username = req.body.username;

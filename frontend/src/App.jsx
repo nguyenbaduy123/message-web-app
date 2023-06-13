@@ -12,9 +12,7 @@ import { Register } from './components/Auth/Register'
 const s = classNames.bind(styles)
 
 function App() {
-  const [currentForm, setCurrentForm] = useState(
-    !sessionStorage.getItem('username') ? 'login' : ''
-  )
+  const [currentForm, setCurrentForm] = useState('login')
   const toggleForm = (formName) => {
     setCurrentForm(formName)
   }
