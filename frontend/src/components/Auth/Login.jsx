@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import styles from './Auth.module.css'
 import classNames from 'classnames/bind'
 import userApi from '../../apis/userApi'
 import { notification } from 'antd'
+import { useNavigate } from 'react-router-dom'
+import { ChatContext } from '../../context/ChatContext'
+import messageApi from '../../apis/messageApi'
 
 const s = classNames.bind(styles)
 
-export const Login = (props) => {
+export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const { token, setToken, setConversations, setCurrentConversationId } =
+    useContext(ChatContext)
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -21,7 +27,26 @@ export const Login = (props) => {
       if (!data.data.error) {
         sessionStorage.setItem('username', data.data.user.fullname)
         sessionStorage.setItem('id', data.data.user.id)
-        props.onFormSwitch('chat')
+        sessionStorage.setItem('accessToken', data.data.accessToken)
+        console.log(data.data)
+        setToken({
+          accessToken: data.data.accessToken,
+          refreshToken: data.data.refreshToken,
+        })
+        ;(async () => {
+          try {
+            const res = await messageApi.get('/private', {
+              params: {
+                id: sessionStorage.getItem('id'),
+              },
+            })
+            setConversations([...res.data])
+            setCurrentConversationId(res.data[0].id)
+          } catch (error) {
+            console.log(error)
+          }
+        })()
+        navigate('/')
       } else {
         notification.error({
           message: 'Login Failed!',
@@ -70,7 +95,9 @@ export const Login = (props) => {
         </form>
         <button
           className={s('link-btn')}
-          onClick={() => props.onFormSwitch('register')}
+          onClick={() => {
+            navigate('/register')
+          }}
         >
           Don't have an account
         </button>

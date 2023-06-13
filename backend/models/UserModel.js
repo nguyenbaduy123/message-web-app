@@ -62,11 +62,11 @@ class UserModel {
     return { success: false, error: "Incorrect email" };
   };
 
-  async updateToken(id, refreshToken) {
-    const rows = await query(
-      "UPDATE student SET refreshToken = ? WHERE id = ?",
-      [refreshToken, id]
-    );
+  static async updateToken(id, refreshToken) {
+    const rows = await query("UPDATE users SET refreshToken = ? WHERE id = ?", [
+      refreshToken,
+      id,
+    ]);
 
     console.log(rows);
 

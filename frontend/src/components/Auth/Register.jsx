@@ -2,16 +2,18 @@ import React, { useState } from 'react'
 import styles from './Auth.module.css'
 import classNames from 'classnames/bind'
 import { notification } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 import userApi from '../../apis/userApi'
 
 const s = classNames.bind(styles)
 
-export const Register = (props) => {
+export const Register = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [userName, setUserName] = useState('')
   const [fullName, setFullName] = useState('')
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -29,7 +31,9 @@ export const Register = (props) => {
           placement: 'top',
           duration: 1,
         })
-        props.onFormSwitch('login')
+
+        navigate('/login')
+        // props.onFormSwitch('login')
       }
     } catch (error) {
       console.error('Register error: ', error)
@@ -95,10 +99,7 @@ export const Register = (props) => {
           </button>
         </form>
 
-        <button
-          className={s('link-btn')}
-          onClick={() => props.onFormSwitch('login')}
-        >
+        <button className={s('link-btn')} onClick={() => navigate('/login')}>
           Already have an account? Login here.
         </button>
       </div>
