@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import classNames from 'classnames/bind'
 import { Avatar, Input } from 'antd'
-import io from 'socket.io-client'
 import { BsFillCameraVideoFill, BsFillTelephoneFill } from 'react-icons/bs'
 import { FaEllipsisH } from 'react-icons/fa'
 
@@ -9,15 +8,16 @@ import styles from './MainChat.module.css'
 import MessageList from '../MessageList/MessageList'
 import { ChatContext } from '../../context/ChatContext'
 import messageApi from '../../apis/messageApi'
+import GroupMessageList from '../MessageList/GroupMessageList'
 
 const s = classNames.bind(styles)
 
 const { TextArea } = Input
 const MAX_ROWS = 5
 
-const MainChat = () => {
+const GroupChat = () => {
   const userId = sessionStorage.getItem('id')
-  const { setConversations, currentConversation, socket } =
+  const { setGroupConversation, currentGroupConversation, socket } =
     useContext(ChatContext)
 
   const [currentText, setCurrentText] = useState('')
@@ -29,7 +29,7 @@ const MainChat = () => {
   useEffect(() => {
     socket.on('receive_message', (data) => {
       console.log(data)
-      setConversations((prevConversations) =>
+      setGroupConversation((prevConversations) =>
         prevConversations.map((conv) =>
           data.to_id === conv.id || data.from_id === conv.id
             ? {
@@ -48,7 +48,7 @@ const MainChat = () => {
     if (text === '') return
     const currentMsg = {
       from_id: parseInt(sessionStorage.getItem('id')),
-      to_id: currentConversation.id,
+      to_id: currentGroupConversation.id,
       message: text,
       created_at: new Date(),
       updated_at: new Date(),
@@ -78,9 +78,12 @@ const MainChat = () => {
       <div>
         <div className={s('header')}>
           <div className={s('group')}>
-            <Avatar src={currentConversation?.image_url} size={52} />
+            <Avatar
+              src={`//localhost:8080/` + currentGroupConversation?.image_url}
+              size={52}
+            />
             <div className={s('info-text')}>
-              <div className={s('name')}>{currentConversation?.username}</div>
+              <div className={s('name')}>{currentGroupConversation?.name}</div>
               <div className={s('state')}>Online</div>
             </div>
           </div>
@@ -90,7 +93,7 @@ const MainChat = () => {
             <FaEllipsisH size={18} />
           </div>
         </div>
-        <MessageList />
+        <GroupMessageList />
       </div>
       <TextArea
         className={s('input')}
@@ -106,4 +109,4 @@ const MainChat = () => {
   )
 }
 
-export default MainChat
+export default GroupChat

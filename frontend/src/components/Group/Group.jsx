@@ -10,10 +10,12 @@ import messageApi from '../../apis/messageApi'
 const s = classNames.bind(styles)
 
 const Group = () => {
-  const { groupPopUp, setGroupPopUp, conversations } = useContext(ChatContext)
+  const { groupPopUp, setGroupPopUp, conversations, socket } =
+    useContext(ChatContext)
   const [groupName, setGroupName] = useState('')
   const [memberList, setMemberList] = useState()
   const [choosenMember, setChoosenMember] = useState([])
+  const [file, setFile] = useState(null)
   const memberRef = useRef()
 
   useEffect(() => {
@@ -24,15 +26,14 @@ const Group = () => {
     console.log(choosenMember)
   }, [choosenMember])
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-  }
-
   const handleChange = (e) => {
-    const name = e.target.name
     const value = e.target.value
 
     setGroupName(value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
   }
 
   const handleMember = (e) => {
@@ -84,8 +85,33 @@ const Group = () => {
     } else {
       const data = await messageApi.post('new-group', {
         name: groupName,
-        number_member: choosenMember.length,
+        number_member: choosenMember.length + 1,
       })
+
+      console.log(data)
+
+      let member = choosenMember.map((item) => {
+        return {
+          user_id: item.id,
+          group_id: data.data.id,
+        }
+      })
+
+      member = [
+        ...member,
+        {
+          user_id: parseInt(sessionStorage.getItem('id')),
+          group_id: data.data.id,
+        },
+      ]
+
+      const memberRes = await messageApi.post('user-group', member)
+
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('id', data.data.id)
+
+      messageApi.post('upload-avatar', formData)
 
       if (data) {
         notification.success({
@@ -95,10 +121,16 @@ const Group = () => {
           duration: 1,
         })
       }
+
       setGroupName('')
       setChoosenMember([])
       setGroupPopUp(!groupPopUp)
     }
+  }
+
+  const handleFileUpload = (e) => {
+    // console.log(e.target.files)
+    setFile(e.target.files[0])
   }
 
   return groupPopUp ? (
@@ -110,6 +142,11 @@ const Group = () => {
           <label className={s('group-label')}>Tên nhóm</label>
 
           <input type="text" name="group-name" onChange={handleChange} />
+        </div>
+
+        <div className={s('group-avatar')}>
+          <label className={s('avatar-label')}>Ảnh đại diện nhóm</label>
+          <input type="file" onChange={handleFileUpload} />
         </div>
 
         <div className={s('group-member')}>

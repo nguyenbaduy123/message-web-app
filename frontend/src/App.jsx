@@ -9,6 +9,7 @@ import { Login } from './components/Auth/Login'
 import { Register } from './components/Auth/Register'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Group from './components/Group/Group'
+import Chat from './components/MainChat/Chat'
 
 const s = classNames.bind(styles)
 
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
                 <LeftBar />
               </div>
               <div className={s('main-chat')}>
-                <MainChat />
+                <Chat />
                 <Group />
               </div>
             </main>
@@ -54,36 +55,6 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  // const [currentForm, setCurrentForm] = useState(
-  //   !sessionStorage.getItem('username') ? 'login' : ''
-  // )
-  // const toggleForm = (formName) => {
-  //   setCurrentForm(formName)
-  // }
-
-  // if (currentForm === 'login') {
-  //   return <Login onFormSwitch={toggleForm} />
-  // } else if (currentForm === 'register') {
-  //   return <Register onFormSwitch={toggleForm} />
-  // } else {
-  //   return (
-  //     <ChatContextProvider>
-  //       <div className={s('container')}>
-  //         <Layout>
-  //           <main className={s('main-content')}>
-  //             <div className={s('left-bar')}>
-  //               <LeftBar />
-  //             </div>
-  //             <div className={s('main-chat')}>
-  //               <MainChat />
-  //             </div>
-  //           </main>
-  //         </Layout>
-  //       </div>
-  //     </ChatContextProvider>
-  //   )
-  // }
-
   return (
     <div className="App">
       <RouterProvider router={router} />

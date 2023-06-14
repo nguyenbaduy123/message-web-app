@@ -5,13 +5,14 @@ const cookieParser = require("cookie-parser");
 const http = require("http");
 
 const authRoute = require("./routes/Auth");
-const messageRoute = require("./routes/Message")
+const messageRoute = require("./routes/Message");
 require("dotenv").config();
 
 const port = process.env.PORT || 8080;
 const app = express();
 const server = http.createServer(app);
 app.use(express.json());
+app.use(express.static("uploads"));
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -21,7 +22,7 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/user", authRoute);
-app.use("/api/msg", messageRoute)
+app.use("/api/msg", messageRoute);
 
 const io = new Server(server, {
   cors: {

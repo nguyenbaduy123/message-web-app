@@ -18,12 +18,23 @@ exports.saveGroup = async (req, res) => {
 exports.saveUserGroup = async (req, res) => {
   try {
     const data = req.body;
-    const userGroup = new UserGroupModel(data);
 
-    const result = await GroupService.saveUserGroup(userGroup);
+    for (item of data) {
+      console.log(item);
+      const userGroup = new UserGroupModel(item);
 
-    returnres.send(result);
+      const result = await GroupService.saveUserGroup(userGroup);
+    }
+
+    return res.send("Success");
   } catch (err) {
     console.log(err);
   }
+};
+
+exports.getAllGroupMessage = async (req, res) => {
+  const id = req.query.id;
+  const result = await GroupModel.getAllGroupMessage(id);
+
+  if (result) return res.json(result);
 };

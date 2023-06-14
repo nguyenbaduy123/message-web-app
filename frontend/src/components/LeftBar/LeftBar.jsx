@@ -8,14 +8,20 @@ import Card from '../Card/Card'
 import { ChatContext } from '../../context/ChatContext'
 import { BiCommentAdd } from 'react-icons/bi'
 import { IconContext } from 'react-icons'
+import GroupCard from '../Card/GroupCard'
 
 const s = classNames.bind(styles)
 
 function LeftBar() {
-  const { conversations, groupPopUp, setGroupPopUp } = useContext(ChatContext)
+  const { conversations, groupPopUp, setGroupPopUp, groupConversation } =
+    useContext(ChatContext)
 
-  const renderListConverstion = conversations.map((conversation) => (
+  const renderListConverstion = conversations?.map((conversation) => (
     <Card key={conversation.id} conversation={conversation} />
+  ))
+
+  const renderGroupConversation = groupConversation?.map((conversation) => (
+    <GroupCard key={conversation.id} conversation={conversation}></GroupCard>
   ))
 
   return (
@@ -34,6 +40,7 @@ function LeftBar() {
       </div>
       <Input className={s('search-input')} prefix={<HiOutlineSearch />} />
       <div className={s('list-conversation')}>{renderListConverstion}</div>
+      <div className={s('list-conversation')}>{renderGroupConversation}</div>
     </div>
   )
 }

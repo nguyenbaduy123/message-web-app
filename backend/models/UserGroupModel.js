@@ -12,15 +12,14 @@ class UserGroupModel {
     this.user_id = data.user_id || null;
   }
 
-  static async save() {
-    db("group_user")
-      .insert({
-        group_id: this.group_id,
-        user_id: this.user_id,
-      })
-      .then((res) => console.log(res));
+  async save() {
+    const res = await db("group_user").insert({
+      group_id: this.group_id,
+      user_id: this.user_id,
+    });
 
     return {
+      id: res,
       group_id: this.group_id,
       user_id: this.user_id,
     };

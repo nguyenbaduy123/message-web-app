@@ -1,0 +1,68 @@
+.container {
+  padding-left: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border1);
+  align-items: center;
+}
+
+.icons {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: #fff;
+}
+
+.group {
+  display: flex;
+}
+
+.info-text {
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.state {
+  color: green;
+  font-size: 14px;
+}
+
+.input {
+  background-color: var(--dark2);
+  border: none;
+  color: #fff;
+  box-shadow: none;
+}
+
+.input::placeholder {
+  color: #fff;
+  opacity: 0.5;
+}
+
+.input::-webkit-scrollbar {
+  width: 10px;
+}
+
+.input::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.input::-webkit-scrollbar-thumb {
+  background-color: var(--dark1);
+  border-radius: 5px;
+}
