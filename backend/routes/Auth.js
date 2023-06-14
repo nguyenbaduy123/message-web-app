@@ -7,6 +7,7 @@ const {
   saveUser,
   login,
   updateToken,
+  searchUsers,
 } = require("../controllers/UserController");
 
 const router = express.Router();
@@ -25,6 +26,7 @@ const router = express.Router();
 
 router.route("/").get(getAllUser).post(saveUser);
 router.route("/login").post(login);
+router.route("/search").post(searchUsers);
 
 router.route("/posts").get(verifyToken, (req, res) => {
   res.json(posts.filter((posts) => posts.userId === req.userId));

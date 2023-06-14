@@ -52,6 +52,12 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.searchUsers = async (req, res) => {
+  const { keyword, userId } = req.body;
+  const result = await UserModel.searchUsers(userId, keyword);
+  res.status(result.statusCode).json(result);
+};
+
 exports.updateToken = async (req, res) => {
   const users = await UserModel.findAll();
   const refreshToken = req.body.refreshToken;

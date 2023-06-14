@@ -72,6 +72,19 @@ class UserModel {
 
     return rows;
   }
+  static async searchUsers(userId, keyword) {
+    try {
+      const result = await db
+        .select("id", "username", "fullname")
+        .from("users")
+        .where("fullname", "like", `%${keyword}%`)
+        .whereNot("id", userId);
+      return { success: true, result: result, statusCode: 200 };
+    } catch (error) {
+      console.error("Error search user: ", user);
+      return { success: false, statusCode: 505 };
+    }
+  }
 }
 
 module.exports = UserModel;
