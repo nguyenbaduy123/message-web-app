@@ -85,6 +85,22 @@ class UserModel {
       return { success: false, statusCode: 505 };
     }
   }
+
+  static async getUser(id) {
+    try {
+      const user = await db("users").where("id", id).first();
+      return { success: true, statusCode: 200, user: user };
+    } catch (error) {
+      console.error("Error get user: ", error);
+      return { success: false, statusCode: 505 };
+    }
+  }
+
+  static async updateUser(userData) {
+    try {
+      // const user = await db.update()
+    } catch (error) {}
+  }
 }
 
 module.exports = UserModel;

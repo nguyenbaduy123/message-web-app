@@ -82,3 +82,10 @@ exports.updateToken = async (req, res) => {
     return res.sendStatus(403);
   }
 };
+
+exports.getUser = async (req, res) => {
+  console.log(req);
+  const id = req.params.id;
+  const result = await UserModel.getUser(id);
+  return res.status(result.statusCode).json(result);
+};
