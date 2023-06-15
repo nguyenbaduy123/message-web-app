@@ -13,7 +13,7 @@ exports.getAllMsg = async (req, res) => {
   }
 };
 
-exports.saveMsg = async (req, res) => {
+exports.saveGroupMsg = async (req, res) => {
   try {
     const data = req.body;
     const msg = new GroupMessageModel(data);

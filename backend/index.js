@@ -47,6 +47,32 @@ io.on("connection", (socket) => {
     io.to(users[data.to_id]).emit("receive_message", data);
     io.to(users[data.from_id]).emit("receive_message", data);
   });
+
+  socket.on("send_group_message", (data) => {
+    // console.log(data);
+    io.to(data.group_id).emit("receive_group_message", data);
+  });
+
+  socket.on("init-room", (user_id, data) => {
+    data.map((item) => {
+      socket.join(item.id);
+      // console.log(">>> Nguoi dung " + user_id + " da tham gia nhom " + item.id);
+    });
+  });
+
+  socket.on("create-room", (user_id, group_id, choosenMember) => {
+    socket.join(group_id);
+    // console.log(">>> Nguoi dung " + user_id + " da tham gia nhom");
+
+    choosenMember.map((item) => {
+      io.to(users[item.id]).emit("request-join", group_id);
+    });
+  });
+
+  socket.on("accept-join", (user_id, group_id) => {
+    // console.log(">>> Nguoi dung " + user_id + " da tham gia nhom");
+    socket.join(group_id);
+  });
 });
 
 server.listen(port, () => {

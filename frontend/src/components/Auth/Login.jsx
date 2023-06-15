@@ -14,7 +14,7 @@ export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const {
-    token,
+    socket,
     setToken,
     setConversations,
     setCurrentConversationId,
@@ -60,6 +60,8 @@ export const Login = () => {
                 id: sessionStorage.getItem('id'),
               },
             })
+
+            socket.emit('init-room', sessionStorage.getItem('id'), res.data)
             setGroupConversation([...res.data])
           } catch (error) {
             console.log(error)

@@ -23,15 +23,11 @@ const GroupChat = () => {
   const [currentText, setCurrentText] = useState('')
 
   useEffect(() => {
-    socket.emit('connected', sessionStorage.getItem('id'))
-  }, [])
-
-  useEffect(() => {
-    socket.on('receive_message', (data) => {
+    socket.on('receive_group_message', (data) => {
       console.log(data)
       setGroupConversation((prevConversations) =>
         prevConversations.map((conv) =>
-          data.to_id === conv.id || data.from_id === conv.id
+          data.group_id === conv.id
             ? {
                 ...conv,
                 messages: [...conv.messages, { ...data }],
@@ -47,16 +43,16 @@ const GroupChat = () => {
     let text = currentText.trim()
     if (text === '') return
     const currentMsg = {
-      from_id: parseInt(sessionStorage.getItem('id')),
-      to_id: currentGroupConversation.id,
+      user_id: parseInt(sessionStorage.getItem('id')),
+      group_id: currentGroupConversation.id,
       message: text,
       created_at: new Date(),
       updated_at: new Date(),
     }
-    socket.emit('send_message', currentMsg)
+    socket.emit('send_group_message', currentMsg)
     ;(async () => {
       try {
-        const data = messageApi.post('/private', currentMsg)
+        const data = messageApi.post('/group', currentMsg)
         console.log('Insert success')
       } catch (error) {
         console.log(error)

@@ -8,7 +8,7 @@ import { ChatContext } from '../../context/ChatContext'
 const s = classNames.bind(styles)
 
 const Card = ({ conversation }) => {
-  const { currentConversationId, setCurrentConversationId } =
+  const { currentConversationId, setCurrentConversationId, setCurrentGroupId } =
     useContext(ChatContext)
 
   return (
@@ -16,7 +16,10 @@ const Card = ({ conversation }) => {
       className={s('container', {
         active: conversation?.id === currentConversationId,
       })}
-      onClick={() => setCurrentConversationId(conversation?.id)}
+      onClick={() => {
+        setCurrentConversationId(conversation?.id)
+        setCurrentGroupId('0')
+      }}
     >
       <div className={s('information')}>
         <div className={s('avatar')}>

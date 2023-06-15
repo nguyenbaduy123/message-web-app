@@ -23,10 +23,6 @@ const MainChat = () => {
   const [currentText, setCurrentText] = useState('')
 
   useEffect(() => {
-    socket.emit('connected', sessionStorage.getItem('id'))
-  }, [])
-
-  useEffect(() => {
     socket.on('receive_message', (data) => {
       console.log(data)
       setConversations((prevConversations) =>

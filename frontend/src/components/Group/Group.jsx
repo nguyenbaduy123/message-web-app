@@ -10,8 +10,13 @@ import messageApi from '../../apis/messageApi'
 const s = classNames.bind(styles)
 
 const Group = () => {
-  const { groupPopUp, setGroupPopUp, conversations, socket } =
-    useContext(ChatContext)
+  const {
+    groupPopUp,
+    setGroupPopUp,
+    conversations,
+    socket,
+    setGroupConversation,
+  } = useContext(ChatContext)
   const [groupName, setGroupName] = useState('')
   const [memberList, setMemberList] = useState()
   const [choosenMember, setChoosenMember] = useState([])
@@ -88,8 +93,6 @@ const Group = () => {
         number_member: choosenMember.length + 1,
       })
 
-      console.log(data)
-
       let member = choosenMember.map((item) => {
         return {
           user_id: item.id,
@@ -110,7 +113,6 @@ const Group = () => {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('id', data.data.id)
-
       messageApi.post('upload-avatar', formData)
 
       if (data) {
@@ -121,6 +123,26 @@ const Group = () => {
           duration: 1,
         })
       }
+
+      ;(async () => {
+        try {
+          const res = await messageApi.get('/group', {
+            params: {
+              id: sessionStorage.getItem('id'),
+            },
+          })
+          setGroupConversation([...res.data])
+        } catch (error) {
+          console.log(error)
+        }
+      })()
+
+      socket.emit(
+        'create-room',
+        sessionStorage.getItem('id'),
+        data.data.id,
+        choosenMember
+      )
 
       setGroupName('')
       setChoosenMember([])

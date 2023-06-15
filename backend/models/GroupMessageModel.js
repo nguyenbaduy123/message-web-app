@@ -12,13 +12,10 @@ class GroupMessageModel {
   }
 
   async save() {
-    await query("INSERT INTO group_message VALUES (?, ?, ?, ?, ?);", [
-      this.group_id,
-      this.user_id,
-      this.message,
-      this.created_at,
-      this.updated_at,
-    ]);
+    await query(
+      "INSERT INTO group_message (group_id, user_id, message) VALUES (?, ?, ?);",
+      [this.group_id, this.user_id, this.message]
+    );
 
     console.log(this.message);
     console.log("Saved");

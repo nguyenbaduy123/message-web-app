@@ -12,12 +12,13 @@ const {
 } = require("../controllers/GroupController");
 
 const { saveMsg } = require("../controllers/PrivateMessageController");
+const { saveGroupMsg } = require("../controllers/GroupMessageController");
 const GroupModel = require("../models/GroupModel");
 const router = express.Router();
 
 router.route("/private").get(getAllPrivateMessage).post(saveMsg);
 
-router.route("/group").get(getAllGroupMessage);
+router.route("/group").get(getAllGroupMessage).post(saveGroupMsg);
 router.route("/new-group").post(saveGroup);
 router.route("/user-group").post(saveUserGroup);
 
@@ -27,7 +28,6 @@ router.route("/upload-avatar").post((req, res, next) => {
       return res.status(500).json(err);
     }
 
-    console.log(req.body.id, req.file);
     GroupModel.saveImage(req.body.id, req.file.originalname);
     return res.status(200).send(req.file);
   });

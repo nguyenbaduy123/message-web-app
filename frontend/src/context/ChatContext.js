@@ -5,8 +5,8 @@ import io from 'socket.io-client'
 
 export const ChatContext = createContext()
 
+const socket = io.connect('http://localhost:8080')
 export const ChatContextProvider = ({ children }) => {
-  const socket = io.connect('http://localhost:8080')
   const [currentConversationId, setCurrentConversationId] = useState('1')
   const [conversations, setConversations] = useState([])
   const [currentGroupId, setCurrentGroupId] = useState('0')
@@ -54,6 +54,7 @@ export const ChatContextProvider = ({ children }) => {
               id: sessionStorage.getItem('id'),
             },
           })
+          socket.emit('init-room', sessionStorage.getItem('id'), res.data)
           setGroupConversation([...res.data])
         } catch (error) {
           console.log(error)
