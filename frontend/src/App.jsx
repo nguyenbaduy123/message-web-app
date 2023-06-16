@@ -9,6 +9,7 @@ import { Login } from './components/Auth/Login'
 import { Register } from './components/Auth/Register'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Group from './components/Group/Group'
+import EditProfile from './components/EditProfile/EditProfile'
 import Chat from './components/MainChat/Chat'
 
 const s = classNames.bind(styles)
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     element: (
       <ChatContextProvider>
         <div className={s('container')}>
-          <Layout>
+          <Layout currentTab="chat">
             <main className={s('main-content')}>
               <div className={s('left-bar')}>
                 <LeftBar />
@@ -50,6 +51,18 @@ const router = createBrowserRouter([
       <ChatContextProvider>
         <Register />
       </ChatContextProvider>
+    ),
+  },
+  {
+    path: '/edit-profile',
+    element: (
+      <div className={s('container')}>
+        <Layout currentTab="edit-profile">
+          <main className={s('main-content')}>
+            <EditProfile />
+          </main>
+        </Layout>
+      </div>
     ),
   },
 ])
