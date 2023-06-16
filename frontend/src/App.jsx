@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: (
       <ChatContextProvider>
         <div className={s('container')}>
-          <Layout>
+          <Layout currentTab="chat">
             <main className={s('main-content')}>
               <div className={s('left-bar')}>
                 <LeftBar />
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
     path: '/edit-profile',
     element: (
       <div className={s('container')}>
-        <Layout>
+        <Layout currentTab="edit-profile">
           <main className={s('main-content')}>
             <EditProfile />
           </main>

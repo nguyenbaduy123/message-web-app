@@ -8,6 +8,10 @@
 .icons {
   width: 2.5rem;
   height: 2.5rem;
-  margin: 1rem;
+  padding: 1rem;
   color: #fff;
+}
+
+.active {
+  background-color: #7500f7;
 }

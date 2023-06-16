@@ -29,7 +29,7 @@ const beforeUpload = (file) => {
 const EditProfile = () => {
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
-  const [name, setName] = useState('')
+  const [fullname, setFullname] = useState('')
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,7 +39,7 @@ const EditProfile = () => {
         const data = response.data
         if (data.success) {
           const user = data.user
-          setName(user.fullname)
+          setFullname(user.fullname)
           setImageUrl(user.image_url)
         }
       } catch (error) {
@@ -49,21 +49,8 @@ const EditProfile = () => {
     fetchUser()
   }, [])
 
-  const handleChange = (info) => {
-    const file = info.file
-    if (file.status === 'uploading') {
-      setLoading(true)
-      return
-    }
-    if (file.status === 'done') {
-      getBase64(file.originFileObj, (url) => {
-        setLoading(false)
-        setImageUrl(url)
-      })
-    }
-  }
-
   const handleCustomRequest = async ({ file }) => {
+    setLoading(true)
     const cloudName = 'draqifekg'
     const uploadPreset = 'uiqlji3m'
     const apiUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
@@ -76,13 +63,25 @@ const EditProfile = () => {
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
         },
-        onUploadProgress: (progressEvent) => {},
       })
 
       const imgUrl = response.data.secure_url
       setImageUrl(imgUrl)
     } catch (error) {
       message.error('Upload failed.')
+    }
+    setLoading(false)
+  }
+
+  const handleSave = async () => {
+    const userId = sessionStorage.getItem('id')
+    try {
+      const result = await userApi.put(`/${userId}`, {
+        fullname: fullname,
+        image_url: imageUrl,
+      })
+    } catch (error) {
+      console.error('Update user error: ', error)
     }
   }
 
@@ -95,45 +94,47 @@ const EditProfile = () => {
 
   return (
     <div className={s('container')}>
-      <Upload
-        name="avatar"
-        listType="picture-circle"
-        className="avatar-uploader"
-        showUploadList={false}
-        beforeUpload={beforeUpload}
-        customRequest={handleCustomRequest}
-        onChange={handleChange}
-      >
-        {imageUrl && !loading ? (
-          <img
-            src={imageUrl}
-            alt="avatar"
-            style={{ width: '100%', height: '100%', borderRadius: '50%' }}
-          />
-        ) : (
-          uploadButton
-        )}
-      </Upload>
+      <div className={s('avatar')}>
+        <Upload
+          name="avatar"
+          listType="picture-circle"
+          className="avatar-uploader"
+          showUploadList={false}
+          beforeUpload={beforeUpload}
+          customRequest={handleCustomRequest}
+        >
+          {imageUrl && !loading ? (
+            <img
+              src={imageUrl}
+              alt="avatar"
+              style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+            />
+          ) : (
+            uploadButton
+          )}
+        </Upload>
+      </div>
       <div className={s('input-item')}>
-        <label className={s('label')} htmlFor="name">
-          Last name
+        <label htmlFor="name" className={s('label')}>
+          Full name
         </label>
         <Input
           id="name"
           className="input"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={fullname}
+          onChange={(e) => setFullname(e.target.value)}
         />
       </div>
-      <div className={s('input-item')}>
-        <label className={s('label')} htmlFor="password">
-          Password
-        </label>
-        <Input id="password" className="input" />
+      <div className={s('btn-action')}>
+        <Button
+          className={s('save-btn')}
+          type="primary"
+          size="large"
+          onClick={handleSave}
+        >
+          Save
+        </Button>
       </div>
-      <Button className={s('save-btn')} type="primary" size="large">
-        Save
-      </Button>
     </div>
   )
 }

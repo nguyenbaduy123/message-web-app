@@ -9,6 +9,7 @@ const {
   updateToken,
   searchUsers,
   getUser,
+  updateUser,
 } = require("../controllers/UserController");
 
 const router = express.Router();
@@ -26,7 +27,7 @@ const router = express.Router();
 // };
 
 router.route("/").get(getAllUser).post(saveUser);
-router.route("/:id").get(verifyToken, getUser);
+router.route("/:id").get(verifyToken, getUser).put(verifyToken, updateUser);
 router.route("/login").post(login);
 router.route("/search").post(searchUsers);
 

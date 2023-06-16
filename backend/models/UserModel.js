@@ -75,10 +75,9 @@ class UserModel {
   static async searchUsers(userId, keyword) {
     try {
       const result = await db
-        .select("id", "username", "fullname")
+        .select("id", "username", "fullname", "image_url")
         .from("users")
-        .where("fullname", "like", `%${keyword}%`)
-        .whereNot("id", userId);
+        .where("fullname", "like", `%${keyword}%`);
       return { success: true, result: result, statusCode: 200 };
     } catch (error) {
       console.error("Error search user: ", user);
@@ -96,10 +95,24 @@ class UserModel {
     }
   }
 
-  static async updateUser(userData) {
+  static async updateUser(userId, userData) {
+    console.log(userId);
+    console.log(userData);
     try {
-      // const user = await db.update()
-    } catch (error) {}
+      const result = await db("users").update(userData).where("id", userId);
+      return {
+        success: true,
+        statusCode: 200,
+        message: "Update user successful",
+      };
+    } catch (error) {
+      console.error("Update user error: ", error);
+      return {
+        success: false,
+        statusCode: 500,
+        message: "Failed to update user",
+      };
+    }
   }
 }
 
