@@ -77,7 +77,8 @@ class UserModel {
       const result = await db
         .select("id", "username", "fullname", "image_url")
         .from("users")
-        .where("fullname", "like", `%${keyword}%`);
+        .where("fullname", "like", `%${keyword}%`)
+        .whereNot("id", userId);
       return { success: true, result: result, statusCode: 200 };
     } catch (error) {
       console.error("Error search user: ", user);
