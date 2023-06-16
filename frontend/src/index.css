@@ -6,3 +6,7 @@
   --dark2: rgb(20, 21, 23);
   --border1: hsl(228, calc(var(--saturation-factor, 1) * 6%), 32.5%);
 }
+
+.App {
+  background-color: rgb(49 49 55);
+}

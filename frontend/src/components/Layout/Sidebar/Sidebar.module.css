@@ -2,11 +2,16 @@
   display: flex;
   flex-direction: column;
   background-color: var(--dark2);
+  border-radius: 8px 0 0 8px;
 }
 
 .icons {
   width: 2.5rem;
   height: 2.5rem;
-  margin: 1rem;
+  padding: 1rem;
   color: #fff;
+}
+
+.active {
+  background-color: #7500f7;
 }

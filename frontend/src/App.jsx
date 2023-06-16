@@ -8,6 +8,7 @@ import { Login } from './components/Auth/Login'
 import { Register } from './components/Auth/Register'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Group from './components/Group/Group'
+import EditProfile from './components/EditProfile/EditProfile'
 import Chat from './components/MainChat/Chat'
 import { useState } from 'react'
 import RightBar from './components/RightBar/RightBar'
@@ -60,6 +61,18 @@ function App() {
         <ChatContextProvider>
           <Register />
         </ChatContextProvider>
+      ),
+    },
+    {
+      path: '/edit-profile',
+      element: (
+        <div className={s('container')}>
+          <Layout currentTab="edit-profile">
+            <main className={s('main-content')}>
+              <EditProfile />
+            </main>
+          </Layout>
+        </div>
       ),
     },
   ])
