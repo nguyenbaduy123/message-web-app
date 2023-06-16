@@ -23,10 +23,9 @@ function LeftBar() {
     setGroupPopUp,
     setCurrentConversationId,
     setConversations,
+    groupConversation,
   } = useContext(ChatContext)
   const [listSearch, setListSearch] = useState([])
-  const { conversations, groupPopUp, setGroupPopUp, groupConversation } =
-    useContext(ChatContext)
 
   const renderListConverstion = conversations?.map((conversation) => (
     <Card key={conversation.id} conversation={conversation} />
