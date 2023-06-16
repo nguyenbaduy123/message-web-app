@@ -9,6 +9,7 @@ const {
   saveGroup,
   saveUserGroup,
   getAllGroupMessage,
+  getAllMember,
 } = require("../controllers/GroupController");
 
 const { saveMsg } = require("../controllers/PrivateMessageController");
@@ -21,6 +22,7 @@ router.route("/private").get(getAllPrivateMessage).post(saveMsg);
 router.route("/group").get(getAllGroupMessage).post(saveGroupMsg);
 router.route("/new-group").post(saveGroup);
 router.route("/user-group").post(saveUserGroup);
+router.route("/member").get(getAllMember);
 
 router.route("/upload-avatar").post((req, res, next) => {
   multer.upload(req, res, (err) => {

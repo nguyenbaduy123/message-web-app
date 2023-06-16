@@ -4,7 +4,8 @@ import classNames from 'classnames/bind'
 import { ChatContext } from '../../context/ChatContext'
 import { IconContext } from 'react-icons'
 import { BsX } from 'react-icons/bs'
-import { notification } from 'antd'
+import { ConfigProvider, notification, Select, theme, Upload } from 'antd'
+import ImgCrop from 'antd-img-crop'
 import messageApi from '../../apis/messageApi'
 
 const s = classNames.bind(styles)
@@ -18,18 +19,11 @@ const Group = () => {
     setGroupConversation,
   } = useContext(ChatContext)
   const [groupName, setGroupName] = useState('')
-  const [memberList, setMemberList] = useState()
+  const [memberList, setMemberList] = useState([])
   const [choosenMember, setChoosenMember] = useState([])
   const [file, setFile] = useState(null)
+  const [fileList, setFileList] = useState([])
   const memberRef = useRef()
-
-  useEffect(() => {
-    console.log(conversations)
-  }, [conversations])
-
-  useEffect(() => {
-    console.log(choosenMember)
-  }, [choosenMember])
 
   const handleChange = (e) => {
     const value = e.target.value
@@ -74,6 +68,7 @@ const Group = () => {
   }
 
   const cancelForm = () => {
+    setFileList([])
     setGroupName('')
     setChoosenMember([])
     setGroupPopUp(!groupPopUp)
@@ -111,9 +106,11 @@ const Group = () => {
       const memberRes = await messageApi.post('user-group', member)
 
       const formData = new FormData()
-      formData.append('file', file)
-      formData.append('id', data.data.id)
-      messageApi.post('upload-avatar', formData)
+      formData.set('id', data.data.id)
+      formData.set('file', file)
+      const avatar = await messageApi.post('upload-avatar', formData)
+
+      console.log(avatar)
 
       if (data) {
         notification.success({
@@ -131,6 +128,7 @@ const Group = () => {
               id: sessionStorage.getItem('id'),
             },
           })
+          console.log(res)
           setGroupConversation([...res.data])
         } catch (error) {
           console.log(error)
@@ -150,9 +148,28 @@ const Group = () => {
     }
   }
 
-  const handleFileUpload = (e) => {
-    // console.log(e.target.files)
-    setFile(e.target.files[0])
+  // const handleFileUpload = (e) => {
+  //   // console.log(e.target.files)
+  //   setFile(e.target.files[0])
+  // }
+
+  const onChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList)
+  }
+
+  const onPreview = async (file) => {
+    let src = file.url
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file.originFileObj)
+        reader.onload = () => resolve(reader.result)
+      })
+    }
+    const image = new Image()
+    image.src = src
+    const imgWindow = window.open(src)
+    imgWindow?.document.write(image.outerHTML)
   }
 
   return groupPopUp ? (
@@ -168,7 +185,23 @@ const Group = () => {
 
         <div className={s('group-avatar')}>
           <label className={s('avatar-label')}>Ảnh đại diện nhóm</label>
-          <input type="file" onChange={handleFileUpload} />
+          {/* <input type="file" onChange={handleFileUpload} /> */}
+          <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+            <ImgCrop rotationSlider>
+              <Upload
+                listType="picture-card"
+                fileList={fileList}
+                onChange={onChange}
+                onPreview={onPreview}
+                beforeUpload={(file) => {
+                  setFile(file)
+                  return false
+                }}
+              >
+                {fileList.length < 1 && '+ Upload'}
+              </Upload>
+            </ImgCrop>
+          </ConfigProvider>
         </div>
 
         <div className={s('group-member')}>
@@ -201,25 +234,6 @@ const Group = () => {
           </div>
         </div>
         <div className={s('dropdown')}>
-          {/* <div className={s('dropdown-member')}>
-            <div className={s('dropdown-details')}>
-              <div className={s('img')}>
-                <img
-                  src="https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/340102593_1671418876634272_7202750476793864828_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=rZ-RDzXm3Z4AX8iq1pq&_nc_ht=scontent.fhan2-5.fna&oh=00_AfDJaJFSv8_C0jPaSw_4ZeKHmCH4DvFtf-DTVKZ0FSgjAg&oe=6484CE1F"
-                  alt=""
-                />
-              </div>
-
-              <p>Nguyễn Thế Vũ</p>
-            </div>
-
-            <IconContext.Provider value={{ size: '1.5rem' }}>
-              <div className={s('remove')}>
-                <BsX />
-              </div>
-            </IconContext.Provider>
-          </div> */}
-
           {choosenMember?.map((item) => (
             <div className={s('dropdown-member')}>
               <div className={s('dropdown-details')}>

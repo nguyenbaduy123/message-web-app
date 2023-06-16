@@ -1,0 +1,36 @@
+.container {
+  width: 250px;
+  background-color: #19191a;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  position: absolute;
+  top: 40px;
+  right: 5px;
+  z-index: 100;
+  display: none;
+}
+
+.active {
+  display: unset;
+}
+
+.wrapper {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item {
+  padding-left: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.item:hover {
+  cursor: pointer;
+  background-color: #3e4042;
+}

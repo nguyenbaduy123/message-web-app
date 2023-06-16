@@ -7,7 +7,7 @@ import { ChatContext } from '../../context/ChatContext'
 
 const s = classNames.bind(styles)
 
-const Card = ({ conversation }) => {
+const Card = ({ conversation, expand, setExpand }) => {
   const { currentConversationId, setCurrentConversationId, setCurrentGroupId } =
     useContext(ChatContext)
 
@@ -19,6 +19,7 @@ const Card = ({ conversation }) => {
       onClick={() => {
         setCurrentConversationId(conversation?.id)
         setCurrentGroupId('0')
+        setExpand(false)
       }}
     >
       <div className={s('information')}>

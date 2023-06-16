@@ -6,7 +6,7 @@ import { Avatar } from 'antd'
 
 const s = classNames.bind(styles)
 
-const GroupCard = ({ conversation }) => {
+const GroupCard = ({ conversation, expand, setExpand }) => {
   const { currentGroupId, setCurrentGroupId, setCurrentConversationId } =
     useContext(ChatContext)
 
@@ -18,6 +18,7 @@ const GroupCard = ({ conversation }) => {
       onClick={() => {
         setCurrentGroupId(conversation?.id)
         setCurrentConversationId('0')
+        setExpand(false)
       }}
     >
       <div className={s('information')}>

@@ -57,6 +57,18 @@ class GroupModel {
 
     return allGroup;
   }
+
+  async getAllMember() {
+    const sql =
+      "SELECT * FROM group_user INNER JOIN users ON group_user.user_id = users.id WHERE group_id = ?";
+    const params = [this.id];
+    console.log(this.id);
+
+    const rows = await query(sql, params);
+    // console.log(rows[0]);
+
+    return rows[0];
+  }
 }
 
 module.exports = GroupModel;

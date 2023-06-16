@@ -3,6 +3,7 @@ import classNames from 'classnames/bind'
 import { Avatar, Input } from 'antd'
 import { BsFillCameraVideoFill, BsFillTelephoneFill } from 'react-icons/bs'
 import { FaEllipsisH } from 'react-icons/fa'
+import { AiFillInfoCircle } from 'react-icons/ai'
 
 import styles from './MainChat.module.css'
 import MessageList from '../MessageList/MessageList'
@@ -15,7 +16,7 @@ const s = classNames.bind(styles)
 const { TextArea } = Input
 const MAX_ROWS = 5
 
-const GroupChat = () => {
+const GroupChat = ({ expand, setExpand }) => {
   const userId = sessionStorage.getItem('id')
   const { setGroupConversation, currentGroupConversation, socket } =
     useContext(ChatContext)
@@ -60,6 +61,10 @@ const GroupChat = () => {
     })()
   }
 
+  const handleExpand = (e) => {
+    setExpand(!expand)
+  }
+
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       if (!event.shiftKey) {
@@ -84,9 +89,9 @@ const GroupChat = () => {
             </div>
           </div>
           <div className={s('icons')}>
-            <BsFillTelephoneFill size={18} />
-            <BsFillCameraVideoFill size={18} />
-            <FaEllipsisH size={18} />
+            <BsFillTelephoneFill size={20} />
+            <BsFillCameraVideoFill size={20} />
+            <AiFillInfoCircle size={20} onClick={handleExpand} />
           </div>
         </div>
         <GroupMessageList />

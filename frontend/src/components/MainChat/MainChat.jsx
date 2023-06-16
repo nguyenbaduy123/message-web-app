@@ -15,7 +15,7 @@ const s = classNames.bind(styles)
 const { TextArea } = Input
 const MAX_ROWS = 5
 
-const MainChat = () => {
+const MainChat = ({ expand, setExpand }) => {
   const userId = sessionStorage.getItem('id')
   const { setConversations, currentConversation, socket } =
     useContext(ChatContext)

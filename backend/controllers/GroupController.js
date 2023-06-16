@@ -38,3 +38,16 @@ exports.getAllGroupMessage = async (req, res) => {
 
   if (result) return res.json(result);
 };
+
+exports.getAllMember = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const group = new GroupModel(id);
+    group.id = id;
+
+    const result = await GroupService.getAllMember(group);
+    if (result) return res.json(result);
+  } catch (error) {
+    console.error(error);
+  }
+};

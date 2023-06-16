@@ -12,16 +12,26 @@ import GroupCard from '../Card/GroupCard'
 
 const s = classNames.bind(styles)
 
-function LeftBar() {
+function LeftBar({ expand, setExpand }) {
   const { conversations, groupPopUp, setGroupPopUp, groupConversation } =
     useContext(ChatContext)
 
   const renderListConverstion = conversations?.map((conversation) => (
-    <Card key={conversation.id} conversation={conversation} />
+    <Card
+      key={conversation.id}
+      conversation={conversation}
+      expand={expand}
+      setExpand={setExpand}
+    />
   ))
 
   const renderGroupConversation = groupConversation?.map((conversation) => (
-    <GroupCard key={conversation.id} conversation={conversation}></GroupCard>
+    <GroupCard
+      key={conversation.id}
+      conversation={conversation}
+      expand={expand}
+      setExpand={setExpand}
+    ></GroupCard>
   ))
 
   return (

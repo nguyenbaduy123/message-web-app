@@ -3,7 +3,7 @@ import { ChatContext } from '../../context/ChatContext'
 import MainChat from './MainChat'
 import GroupChat from './GroupChat'
 
-const Chat = () => {
+const Chat = (props) => {
   const { currentConversationId, currentGroupId, socket } =
     useContext(ChatContext)
   useEffect(() => {
@@ -16,8 +16,9 @@ const Chat = () => {
     socket.emit('connected', sessionStorage.getItem('id'))
   }, [])
 
-  if (currentConversationId != 0) return <MainChat />
-  else return <GroupChat />
+  if (currentConversationId != 0)
+    return <MainChat expand={props.expand} setExpand={props.setExpand} />
+  else return <GroupChat expand={props.expand} setExpand={props.setExpand} />
 }
 
 export default Chat
