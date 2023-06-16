@@ -1,5 +1,3 @@
-const GroupModel = require("../models/GroupModel");
-
 exports.saveGroup = async (group) => {
   return await group.save();
 };

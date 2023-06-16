@@ -18,13 +18,18 @@ h3 {
 }
 
 .group-name,
-.group-member {
+.group-member,
+.group-avatar {
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
 }
 
-.group-name label,
+.group-avatar input {
+  padding: 8px 0;
+}
+
+label,
 .member-label {
   font-size: 0.8rem;
   margin-bottom: 0.5rem;

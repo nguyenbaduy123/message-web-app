@@ -1,12 +1,16 @@
 import { createContext, useEffect, useState } from 'react'
 import messageApi from '../apis/messageApi'
 import { useNavigate } from 'react-router-dom'
+import io from 'socket.io-client'
 
 export const ChatContext = createContext()
 
 export const ChatContextProvider = ({ children }) => {
+  const socket = io.connect('http://localhost:8080')
   const [currentConversationId, setCurrentConversationId] = useState('1')
   const [conversations, setConversations] = useState([])
+  const [currentGroupId, setCurrentGroupId] = useState('0')
+  const [groupConversation, setGroupConversation] = useState([])
   const [token, setToken] = useState({
     accessToken: '',
     refreshToken: '',
@@ -17,6 +21,12 @@ export const ChatContextProvider = ({ children }) => {
   const getCurrentConversation = () => {
     return conversations.find(
       (conversation) => conversation.id === currentConversationId
+    )
+  }
+
+  const getCurrentGroupConversation = () => {
+    return groupConversation.find(
+      (conversations) => conversations.id === currentGroupId
     )
   }
 
@@ -37,6 +47,18 @@ export const ChatContextProvider = ({ children }) => {
           console.log(error)
         }
       })()
+      ;(async () => {
+        try {
+          const res = await messageApi.get('/group', {
+            params: {
+              id: sessionStorage.getItem('id'),
+            },
+          })
+          setGroupConversation([...res.data])
+        } catch (error) {
+          console.log(error)
+        }
+      })()
     }
   }, [])
 
@@ -52,6 +74,12 @@ export const ChatContextProvider = ({ children }) => {
         setToken,
         groupPopUp,
         setGroupPopUp,
+        socket,
+        groupConversation,
+        setGroupConversation,
+        currentGroupId,
+        setCurrentGroupId,
+        currentGroupConversation: getCurrentGroupConversation(),
       }}
     >
       {children}

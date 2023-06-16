@@ -13,8 +13,13 @@ const s = classNames.bind(styles)
 export const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { token, setToken, setConversations, setCurrentConversationId } =
-    useContext(ChatContext)
+  const {
+    token,
+    setToken,
+    setConversations,
+    setCurrentConversationId,
+    setGroupConversation,
+  } = useContext(ChatContext)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -40,8 +45,22 @@ export const Login = () => {
                 id: sessionStorage.getItem('id'),
               },
             })
+
+            console.log(res.data)
             setConversations([...res.data])
             setCurrentConversationId(res.data[0].id)
+          } catch (error) {
+            console.log(error)
+          }
+        })()
+        ;(async () => {
+          try {
+            const res = await messageApi.get('/group', {
+              params: {
+                id: sessionStorage.getItem('id'),
+              },
+            })
+            setGroupConversation([...res.data])
           } catch (error) {
             console.log(error)
           }

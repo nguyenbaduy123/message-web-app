@@ -1,5 +1,5 @@
 const query = require("../db/database");
-const knex = require('knex')
+const knex = require("knex");
 
 const knexConfig = require("../knexfile");
 

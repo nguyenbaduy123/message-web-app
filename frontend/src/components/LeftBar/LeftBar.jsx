@@ -9,6 +9,7 @@ import Card from '../Card/Card'
 import { ChatContext } from '../../context/ChatContext'
 import { BiCommentAdd } from 'react-icons/bi'
 import { IconContext } from 'react-icons'
+import GroupCard from '../Card/GroupCard'
 
 import { DownOutlined } from '@ant-design/icons'
 
@@ -24,8 +25,10 @@ function LeftBar() {
     setConversations,
   } = useContext(ChatContext)
   const [listSearch, setListSearch] = useState([])
+  const { conversations, groupPopUp, setGroupPopUp, groupConversation } =
+    useContext(ChatContext)
 
-  const renderListConverstion = conversations.map((conversation) => (
+  const renderListConverstion = conversations?.map((conversation) => (
     <Card key={conversation.id} conversation={conversation} />
   ))
 
@@ -70,6 +73,9 @@ function LeftBar() {
       setCurrentConversationId(user.id)
     }
   }
+  const renderGroupConversation = groupConversation?.map((conversation) => (
+    <GroupCard key={conversation.id} conversation={conversation}></GroupCard>
+  ))
 
   return (
     <div className={s('container')}>
@@ -92,6 +98,7 @@ function LeftBar() {
         </Space>
       </Dropdown>
       <div className={s('list-conversation')}>{renderListConverstion}</div>
+      <div className={s('list-conversation')}>{renderGroupConversation}</div>
     </div>
   )
 }
