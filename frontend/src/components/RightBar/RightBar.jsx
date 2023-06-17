@@ -103,6 +103,7 @@ const RightBar = () => {
             <Popover
               active={activePopOver === item.user_id ? 'active' : ''}
               id={item.user_id}
+              screen="right-bar"
             ></Popover>
           </div>
         ))}

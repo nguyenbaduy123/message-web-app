@@ -1,0 +1,70 @@
+.friend {
+  padding: 1rem;
+  margin-top: 1.5rem;
+  background-color: #454545;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  border-radius: 7px;
+  display: flex;
+  h2 {
+    margin: 0 0 1rem 0;
+  }
+
+  .friend-add,
+  .friend-not-add {
+    width: 50%;
+  }
+
+  .friend-list {
+    width: 50%;
+    .member {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.8rem;
+      position: relative;
+      .user {
+        display: flex;
+        gap: 0.8rem;
+        .info {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .friend-not-add {
+    padding-right: 1rem;
+    .friend-list {
+      width: 100%;
+
+      .member {
+        .nav {
+          gap: 2rem;
+          .add {
+            background-color: #218dfa;
+            padding: 8px 10px;
+            border-radius: 7px;
+          }
+
+          .remove {
+            background-color: #d81c3c;
+            padding: 8px 10px;
+            border-radius: 7px;
+          }
+        }
+      }
+    }
+  }
+}

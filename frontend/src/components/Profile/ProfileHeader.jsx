@@ -22,8 +22,16 @@ const ProfileHeader = () => {
   const location = useLocation()
 
   useEffect(() => {
-    setOldInfo(userInfo)
+    console.log(userInfo)
   }, [userInfo])
+
+  useEffect(() => {
+    console.log(oldInfo)
+  }, [oldInfo])
+
+  useEffect(() => {
+    setOldInfo(userInfo)
+  }, [])
 
   useEffect(() => {
     const array = location.pathname.split('/')
@@ -115,8 +123,8 @@ const ProfileHeader = () => {
     console.log(userInfo)
     ;(async () => {
       try {
-        const res = await axios.put(
-          'http://localhost:8080/api/v1/user',
+        const res = await userApi.put(
+          '/' + sessionStorage.getItem('id'),
           userInfo
         )
 
@@ -166,7 +174,7 @@ const ProfileHeader = () => {
           }`}
         >
           <h2>{userInfo?.fullname || sessionStorage.getItem('username')}</h2>
-          <p>{userInfo?.address || 'Hanoi, Vietnam'}</p>
+          <p>{userInfo?.status || 'Developer'}</p>
         </div>
 
         <div
@@ -176,17 +184,17 @@ const ProfileHeader = () => {
         >
           <input
             type="text"
-            value={userInfo?.fullname || sessionStorage.getItem('username')}
-            // onChange={(e) =>
-            //   setUserInfo({ ...userInfo, fullname: e.target.value })
-            // }
+            value={userInfo?.fullname}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, fullname: e.target.value })
+            }
           />
           <input
             type="text"
-            value={userInfo?.address || 'Hanoi, Vietnam'}
-            // onChange={(e) =>
-            //   setUserInfo({ ...userInfo, hometown: e.target.value })
-            // }
+            value={userInfo?.status || ''}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, status: e.target.value })
+            }
           />
         </div>
 
@@ -206,7 +214,7 @@ const ProfileHeader = () => {
           className={`edit save-profile ${
             activeEdit === true ? '' : 'display-none'
           }`}
-          // onClick={handleSaveEdit}
+          onClick={handleSaveEdit}
         >
           <span>Save profile</span>
         </div>
@@ -234,9 +242,9 @@ const ProfileHeader = () => {
         </Link>
 
         <Link
-          to="./friends"
-          className={`${activeName === 'friends' ? 'active' : ''}`}
-          onClick={() => setActiveName('friends')}
+          to="./friend"
+          className={`${activeName === 'friend' ? 'active' : ''}`}
+          onClick={() => setActiveName('friend')}
         >
           <IconContext.Provider value={{ size: '1.2rem' }}>
             <div className="icon">
