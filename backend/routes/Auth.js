@@ -11,6 +11,8 @@ const {
   getUser,
   updateUser,
 } = require("../controllers/UserController");
+const multer = require("../middleware/multer");
+const UserModel = require("../models/UserModel");
 
 const router = express.Router();
 
@@ -33,6 +35,30 @@ router.route("/search").post(searchUsers);
 
 router.route("/posts").get(verifyToken, (req, res) => {
   res.json(posts.filter((posts) => posts.userId === req.userId));
+});
+
+router.route("/upload-avatar").post((req, res, next) => {
+  multer.upload(req, res, (err) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+
+    UserModel.saveAvatarImage(req.body.id, req.file.originalname);
+
+    return res.status(200).send(req.file);
+  });
+});
+
+router.route("/upload-bg").post((req, res, next) => {
+  multer.upload(req, res, (err) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+
+    UserModel.saveBgImage(req.body.id, req.file.originalname);
+
+    return res.status(200).send(req.file);
+  });
 });
 
 router.route("/auth/refresh").post(updateToken);
