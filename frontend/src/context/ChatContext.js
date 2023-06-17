@@ -2,11 +2,13 @@ import { createContext, useEffect, useState } from 'react'
 import messageApi from '../apis/messageApi'
 import { useNavigate } from 'react-router-dom'
 import io from 'socket.io-client'
+import userApi from '../apis/userApi'
 
 export const ChatContext = createContext()
 
 const socket = io.connect('http://localhost:8080')
 export const ChatContextProvider = ({ children }) => {
+  const [userInfo, setUserInfo] = useState()
   const [currentConversationId, setCurrentConversationId] = useState('1')
   const [conversations, setConversations] = useState([])
   const [currentGroupId, setCurrentGroupId] = useState('0')
@@ -60,6 +62,14 @@ export const ChatContextProvider = ({ children }) => {
           console.log(error)
         }
       })()
+      ;(async () => {
+        try {
+          const res = await userApi.get('/' + sessionStorage.getItem('id'))
+          setUserInfo(res.data.user)
+        } catch (error) {
+          console.log(error)
+        }
+      })()
     }
   }, [])
 
@@ -81,6 +91,8 @@ export const ChatContextProvider = ({ children }) => {
         currentGroupId,
         setCurrentGroupId,
         currentGroupConversation: getCurrentGroupConversation(),
+        userInfo,
+        setUserInfo,
       }}
     >
       {children}

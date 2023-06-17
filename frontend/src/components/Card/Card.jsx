@@ -24,7 +24,10 @@ const Card = ({ conversation, expand, setExpand }) => {
     >
       <div className={s('information')}>
         <div className={s('avatar')}>
-          <Avatar src={conversation?.image_url} size={40} />
+          <Avatar
+            src={'//localhost:8080/' + conversation?.image_url}
+            size={40}
+          />
         </div>
         <div className={s('text')}>
           <div className={s('receiver')}>{conversation?.fullname}</div>

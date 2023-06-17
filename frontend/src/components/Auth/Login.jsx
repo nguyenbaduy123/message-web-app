@@ -19,6 +19,7 @@ export const Login = () => {
     setConversations,
     setCurrentConversationId,
     setGroupConversation,
+    setUserInfo,
   } = useContext(ChatContext)
   const navigate = useNavigate()
 
@@ -67,6 +68,8 @@ export const Login = () => {
             console.log(error)
           }
         })()
+
+        setUserInfo(data.data.user)
         navigate('/')
       } else {
         notification.error({

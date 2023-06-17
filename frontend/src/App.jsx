@@ -8,10 +8,12 @@ import { Login } from './components/Auth/Login'
 import { Register } from './components/Auth/Register'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Group from './components/Group/Group'
-import EditProfile from './components/EditProfile/EditProfile'
 import Chat from './components/MainChat/Chat'
 import { useState } from 'react'
 import RightBar from './components/RightBar/RightBar'
+import Profile from './components/Profile/Profile'
+import About from './components/Profile/About'
+import Friend from './components/Profile/Friend'
 
 const s = classNames.bind(styles)
 
@@ -64,16 +66,29 @@ function App() {
       ),
     },
     {
-      path: '/edit-profile',
+      path: '/profile',
       element: (
-        <div className={s('container')}>
-          <Layout currentTab="edit-profile">
-            <main className={s('main-content')}>
-              <EditProfile />
-            </main>
-          </Layout>
-        </div>
+        <ChatContextProvider>
+          <div className={s('container')}>
+            <Layout>
+              <main className={s('main-content')}>
+                <Profile />
+              </main>
+            </Layout>
+          </div>
+        </ChatContextProvider>
       ),
+      children: [
+        {
+          path: 'about',
+          element: <About />,
+        },
+
+        {
+          path: 'friend',
+          element: <Friend />,
+        },
+      ],
     },
   ])
 

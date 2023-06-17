@@ -84,7 +84,7 @@ const RightBar = () => {
         {member.map((item) => (
           <div className={s('member')}>
             <div className={s('user')}>
-              <Avatar src={item?.image_url} size={40} />
+              <Avatar src={`//localhost:8080/` + item?.image_url} size={40} />
 
               <div className={s('info')}>{item.fullname}</div>
             </div>
