@@ -13,25 +13,15 @@ const {
 } = require("../controllers/UserController");
 const multer = require("../middleware/multer");
 const UserModel = require("../models/UserModel");
+const { getFriendList } = require("../controllers/FriendController");
 
 const router = express.Router();
 
-// const updateToken = (username, refreshToken) => {
-//   users = users.map((user) => {
-//     if (user.username === username)
-//       return {
-//         ...user,
-//         refreshToken: refreshToken,
-//       };
-
-//     return user;
-//   });
-// };
-
 router.route("/").get(getAllUser).post(saveUser);
-router.route("/:id").get(verifyToken, getUser).put(verifyToken, updateUser);
+router.route("/friend").get(verifyToken, getFriendList);
 router.route("/login").post(login);
 router.route("/search").post(searchUsers);
+router.route("/:id").get(verifyToken, getUser).put(verifyToken, updateUser);
 
 router.route("/posts").get(verifyToken, (req, res) => {
   res.json(posts.filter((posts) => posts.userId === req.userId));

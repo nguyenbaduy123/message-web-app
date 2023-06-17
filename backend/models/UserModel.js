@@ -18,6 +18,8 @@ class UserModel {
     this.bg_url = user.bg_url || "default_bg.jpg";
     this.hometown = user.hometown || "Hà nội";
     this.studied_at = user.studied_at || "Đại học Bách Khoa";
+    this.current_education = user.current_education || "Đại học Bách Khoa";
+    this.status = user.status || "Your status";
     this.address = user.address || "Hanoi, Vietnam";
     this.role_id = 2;
     this.created_at = user.created_at || null;
@@ -27,7 +29,9 @@ class UserModel {
   async save() {
     const hashedPassword = await bcrypt.hash(this.password, 10);
     const result = await query(
-      "INSERT INTO users (username, email, fullname, password, image_url, bg_url, hometown, studied_at, address, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO users (username, email, fullname, password, image_url, \
+        bg_url, hometown, studied_at, current_education, status, address, role_id) \
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         this.username,
         this.email,
@@ -37,6 +41,8 @@ class UserModel {
         this.bg_url,
         this.hometown,
         this.studied_at,
+        this.current_education,
+        this.status,
         this.address,
         this.role_id,
       ]
