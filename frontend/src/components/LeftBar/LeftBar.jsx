@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind'
-import { Select, Dropdown, Space, Input } from 'antd'
+import { Select, Dropdown, Space, Input, ConfigProvider, theme } from 'antd'
 
 import userApi from '../../apis/userApi'
 import styles from './LeftBar.module.css'
@@ -21,6 +21,7 @@ function LeftBar({ expand, setExpand }) {
     groupPopUp,
     setGroupPopUp,
     groupConversation,
+    setCurrentGroupId,
   } = useContext(ChatContext)
   const [listSearch, setListSearch] = useState([])
 
@@ -58,6 +59,8 @@ function LeftBar({ expand, setExpand }) {
   }
 
   const handleClick = (user) => {
+    setCurrentGroupId('0')
+
     const conversation = conversations.find((c) => c.id == user.id)
     if (conversation) {
       setCurrentConversationId(user.id)
@@ -97,12 +100,18 @@ function LeftBar({ expand, setExpand }) {
           </div>
         </IconContext.Provider>
       </div>
+      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+        <Dropdown
+          menu={{ items: listSearch }}
+          trigger={['click']}
+          className={s('search')}
+        >
+          <Space>
+            <Input placeholder="Search by name" onChange={handleSearch} />
+          </Space>
+        </Dropdown>
+      </ConfigProvider>
 
-      <Dropdown menu={{ items: listSearch }} trigger={['click']}>
-        <Space>
-          <Input placeholder="Search by name" onChange={handleSearch} />
-        </Space>
-      </Dropdown>
       <div className={s('list-conversation')}>{renderListConverstion}</div>
       <div className={s('list-conversation')}>{renderGroupConversation}</div>
     </div>

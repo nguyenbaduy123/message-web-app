@@ -74,7 +74,10 @@ const MainChat = ({ expand, setExpand }) => {
       <div>
         <div className={s('header')}>
           <div className={s('group')}>
-            <Avatar src={currentConversation?.image_url} size={52} />
+            <Avatar
+              src={'//localhost:8080/' + currentConversation?.image_url}
+              size={52}
+            />
             <div className={s('info-text')}>
               <div className={s('name')}>{currentConversation?.fullname}</div>
               <div className={s('state')}>Online</div>

@@ -5,6 +5,7 @@ import { notification } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 import userApi from '../../apis/userApi'
+import axios from 'axios'
 
 const s = classNames.bind(styles)
 
@@ -18,7 +19,7 @@ export const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const data = await userApi.post('/', {
+      const data = await axios.post('http://localhost:8080/api/user/', {
         email: email,
         username: userName,
         password: password,

@@ -224,7 +224,7 @@ const Group = () => {
               >
                 <div className={s('dropdown-details')}>
                   <div className={s('img')}>
-                    <img src={item.image_url} alt="" />
+                    <img src={`//localhost:8080/` + item.image_url} alt="" />
                   </div>
 
                   <p>{item.fullname}</p>
@@ -238,7 +238,7 @@ const Group = () => {
             <div className={s('dropdown-member')}>
               <div className={s('dropdown-details')}>
                 <div className={s('img')}>
-                  <img src={item.image_url} alt="" />
+                  <img src={`//localhost:8080/` + item.image_url} alt="" />
                 </div>
 
                 <p>{item.fullname}</p>
