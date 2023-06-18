@@ -13,12 +13,20 @@ const {
 } = require("../controllers/UserController");
 const multer = require("../middleware/multer");
 const UserModel = require("../models/UserModel");
-const { getFriendList } = require("../controllers/FriendController");
+const {
+  getFriendList,
+  updatedFriend,
+  getUserRequest,
+} = require("../controllers/FriendController");
 
 const router = express.Router();
 
 router.route("/").get(getAllUser).post(saveUser);
-router.route("/friend").get(verifyToken, getFriendList);
+router
+  .route("/friend")
+  .get(verifyToken, getFriendList)
+  .post(verifyToken, updatedFriend);
+router.route("/request").get(verifyToken, getUserRequest);
 router.route("/login").post(login);
 router.route("/search").post(searchUsers);
 router.route("/:id").get(verifyToken, getUser).put(verifyToken, updateUser);

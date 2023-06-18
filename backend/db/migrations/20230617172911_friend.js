@@ -16,6 +16,8 @@ exports.up = function (knex) {
       .references("id")
       .inTable("users")
       .onDelete("CASCADE");
+
+    table.integer("accepted");
   });
 };
 

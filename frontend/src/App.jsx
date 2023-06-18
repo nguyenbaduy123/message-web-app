@@ -14,6 +14,7 @@ import RightBar from './components/RightBar/RightBar'
 import Profile from './components/Profile/Profile'
 import About from './components/Profile/About'
 import Friend from './components/Profile/Friend'
+import Notification from './components/Notification/Notification'
 
 const s = classNames.bind(styles)
 
@@ -89,6 +90,21 @@ function App() {
           element: <Friend />,
         },
       ],
+    },
+
+    {
+      path: '/notification',
+      element: (
+        <ChatContextProvider>
+          <div className={s('container')}>
+            <Layout>
+              <main className={s('main-content')}>
+                <Notification></Notification>
+              </main>
+            </Layout>
+          </div>
+        </ChatContextProvider>
+      ),
     },
   ])
 

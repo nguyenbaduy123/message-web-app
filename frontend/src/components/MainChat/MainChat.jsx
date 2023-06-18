@@ -37,6 +37,8 @@ const MainChat = ({ expand, setExpand }) => {
       )
       setCurrentText('')
     })
+
+    return () => socket.off('receive_message')
   }, [socket])
 
   const handleSend = () => {

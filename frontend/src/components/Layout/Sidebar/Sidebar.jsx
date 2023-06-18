@@ -1,8 +1,8 @@
 import classNames from 'classnames/bind'
 import { BsFillChatDotsFill, BsFillCalendar2Fill } from 'react-icons/bs'
-import { FaFolder } from 'react-icons/fa'
 import { CgProfile } from 'react-icons/cg'
-import { AiOutlineBarChart } from 'react-icons/ai'
+import { IoMdNotificationsOutline } from 'react-icons/io'
+import { BiLogOut } from 'react-icons/bi'
 
 import { Link, useLocation } from 'react-router-dom'
 
@@ -38,6 +38,27 @@ const Sidebar = ({ currentTab }) => {
         <CgProfile
           className={s('icons', { active: currentTab === 'edit-profile' })}
         />
+      </Link>
+
+      <Link
+        to="/notification"
+        className={s(`${activeName === 'notification' ? 'active' : ''}`)}
+        onClick={() => setActiveName('notification')}
+      >
+        <IoMdNotificationsOutline
+          className={s('icons', { active: currentTab === 'notification' })}
+        />
+      </Link>
+
+      <Link
+        to="/login"
+        className={s(`${activeName === 'logout' ? 'active' : ''}`)}
+        onClick={() => {
+          sessionStorage.clear()
+          setActiveName('logout')
+        }}
+      >
+        <BiLogOut className={s('icons', { active: currentTab === 'logout' })} />
       </Link>
     </div>
   )

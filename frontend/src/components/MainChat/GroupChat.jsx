@@ -38,6 +38,8 @@ const GroupChat = ({ expand, setExpand }) => {
       )
       setCurrentText('')
     })
+
+    return () => socket.off('receive_group_message')
   }, [socket])
 
   const handleSend = () => {
