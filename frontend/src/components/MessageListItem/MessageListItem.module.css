@@ -1,17 +1,43 @@
 .container {
   display: flex;
   margin: 10px;
+  gap: 8px;
+}
+
+.message {
+  width: 100%;
 }
 
 .text {
-  background-color: rgb(39, 84, 136);
-  padding: 6px;
-  border-radius: 10px;
+  display: inline-block;
   max-width: 60%;
-  overflow: visible;
   overflow-wrap: break-word;
+  background-color: #3e4042;
+  padding: 6px;
+  border-radius: 0 8px 8px 8px;
 }
 
-.me {
-  justify-content: flex-end;
+.me .text {
+  background-color: rgb(39, 84, 136);
+  border-radius: 8px 0 8px 8px;
+  float: right;
+}
+
+.send-info {
+  margin-bottom: 6px;
+  opacity: 0.7;
+}
+
+.me .send-info {
+  display: none;
+}
+
+.name {
+  font-size: 14px;
+}
+
+.time {
+  font-size: 10px;
+  margin-left: 8px;
+  font-weight: 400;
 }

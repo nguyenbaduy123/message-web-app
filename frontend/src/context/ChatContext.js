@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react'
 import messageApi from '../apis/messageApi'
-import { useNavigate } from 'react-router-dom'
+import { redirect, useNavigate } from 'react-router-dom'
 import io from 'socket.io-client'
 import userApi from '../apis/userApi'
 
@@ -43,6 +43,7 @@ export const ChatContextProvider = ({ children }) => {
               id: sessionStorage.getItem('id'),
             },
           })
+          console.log(res)
           setConversations([...res.data])
           setCurrentConversationId(res.data[0].id)
         } catch (error) {

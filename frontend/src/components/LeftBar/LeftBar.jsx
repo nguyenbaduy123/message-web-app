@@ -106,9 +106,11 @@ function LeftBar({ expand, setExpand }) {
           trigger={['click']}
           className={s('search')}
         >
-          <Space>
-            <Input placeholder="Search by name" onChange={handleSearch} />
-          </Space>
+          <Input
+            className={s('input')}
+            placeholder="Search by name"
+            onChange={handleSearch}
+          />
         </Dropdown>
       </ConfigProvider>
 

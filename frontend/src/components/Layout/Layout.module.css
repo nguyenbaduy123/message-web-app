@@ -13,4 +13,12 @@
   background-color: var(--dark1);
   padding: 16px;
   border-radius: 0 8px 8px 0;
+  max-width: 1100px;
+}
+
+@media only screen and (max-width: 600px) {
+  .main-content {
+    padding: 0;
+    padding-right: 16px;
+  }
 }

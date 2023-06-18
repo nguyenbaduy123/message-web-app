@@ -4,6 +4,7 @@ import classNames from 'classnames/bind'
 import MessageListItem from '../MessageListItem/MessageListItem'
 import styles from './MessageList.module.css'
 import { ChatContext } from '../../context/ChatContext'
+import { Avatar, message } from 'antd'
 
 const s = classNames.bind(styles)
 
