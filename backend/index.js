@@ -38,7 +38,8 @@ io.on("connection", (socket) => {
 
   socket.on("connected", (id) => {
     users[id] = socket.id;
-    console.log("Ok");
+
+    socket.broadcast.emit("connected-listener");
   });
 
   socket.on("send_message", (data) => {
@@ -71,7 +72,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("create-room", (user_id, group_id, choosenMember) => {
-    socket.join(group_id);
+    if (!socket.rooms.has(group_id)) socket.join(group_id);
     // console.log(">>> Nguoi dung " + user_id + " da tham gia nhom");
 
     choosenMember.map((item) => {
@@ -80,7 +81,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("accept-join", (user_id, group_id) => {
-    // console.log(">>> Nguoi dung " + user_id + " da tham gia nhom");
+    console.log(">>> Nguoi dung " + user_id + " da tham gia nhom");
     socket.join(group_id);
   });
 });

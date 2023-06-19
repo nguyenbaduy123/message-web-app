@@ -12,9 +12,21 @@ const Chat = ({ expand, setExpand }) => {
     socket,
     setCurrentConversationId,
     setCurrentGroupId,
+    setConversations,
   } = useContext(ChatContext)
   useEffect(() => {
     socket.on('request-join', (group_id) => {
+      console.log('>>> Join room')
+      ;(async () => {
+        const res3 = await messageApi.get('/group', {
+          params: {
+            id: sessionStorage.getItem('id'),
+          },
+        })
+
+        setGroupConversation([...res3.data])
+      })()
+
       socket.emit('accept-join', sessionStorage.getItem('id'), group_id)
     })
 
@@ -35,6 +47,23 @@ const Chat = ({ expand, setExpand }) => {
       })()
       console.log('>>> Leave room ' + group_id)
       socket.emit('leave-room', group_id)
+    })
+
+    socket.on('connected-listener', () => {
+      ;(async () => {
+        try {
+          const res = await messageApi.get('/private', {
+            params: {
+              id: sessionStorage.getItem('id'),
+            },
+          })
+          console.log(res)
+          setConversations([...res.data])
+          setCurrentConversationId(res.data[0].id)
+        } catch (error) {
+          console.log(error)
+        }
+      })()
     })
 
     return () => {

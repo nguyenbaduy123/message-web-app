@@ -7,7 +7,7 @@ import Popover from '../RightBar/Popover'
 import userApi from '../../apis/userApi'
 import axios from 'axios'
 
-const Friend = () => {
+const Friend = ({ expand, setExpand }) => {
   const [activePopOver, setActivePopOver] = useState(0)
   const [friendList, setFriendList] = useState([])
   const [notFriendList, setNotFriendList] = useState([])
@@ -137,14 +137,26 @@ const Friend = () => {
               <div
                 className={'nav'}
                 onClick={() => {
-                  setActivePopOver(!activePopOver)
+                  if (activePopOver === item.id) setActivePopOver(0)
+                  else setActivePopOver(item.id)
+
+                  console.log(item)
                 }}
               >
                 <IconContext.Provider value={{ size: '1.4rem' }}>
                   <BsThreeDots />
                 </IconContext.Provider>
               </div>
-              {/* <Popover active={'active'} id={1} screen="profile"></Popover> */}
+              <Popover
+                active={activePopOver === item.id ? 'active' : ''}
+                id={item.id}
+                screen="profile"
+                item={item}
+                expand={expand}
+                setExpand={setExpand}
+                setFriendList={setFriendList}
+                setNotFriendList={setNotFriendList}
+              ></Popover>
             </div>
           ))}
         </div>

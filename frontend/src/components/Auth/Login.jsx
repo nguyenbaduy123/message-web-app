@@ -68,8 +68,14 @@ export const Login = () => {
             console.log(error)
           }
         })()
-
-        setUserInfo(data.data.user)
+        ;(async () => {
+          try {
+            const res = await userApi.get('/' + sessionStorage.getItem('id'))
+            setUserInfo(res.data.user)
+          } catch (error) {
+            console.log(error)
+          }
+        })()
         navigate('/')
       } else {
         notification.error({

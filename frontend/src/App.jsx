@@ -91,7 +91,7 @@ function App() {
 
         {
           path: 'friend',
-          element: <Friend />,
+          element: <Friend expand={expand} setExpand={setExpand} />,
         },
       ],
     },

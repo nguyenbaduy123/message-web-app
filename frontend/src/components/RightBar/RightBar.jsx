@@ -10,11 +10,17 @@ import Popover from './Popover'
 
 const s = classNames.bind(styles)
 
-const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters']
 const RightBar = ({ expand, setExpand }) => {
   const [selectedItems, setSelectedItems] = useState([])
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o))
-  const { currentGroupConversation } = useContext(ChatContext)
+  const {
+    currentGroupConversation,
+    conversations,
+    currentGroupId,
+    socket,
+    setGroupConversation,
+  } = useContext(ChatContext)
+  const [options, setOptions] = useState(null)
+  const [filter, setFilter] = useState(null)
   const [member, setMember] = useState([])
   const [activePopOver, setActivePopOver] = useState(0)
 
@@ -28,6 +34,13 @@ const RightBar = ({ expand, setExpand }) => {
         })
 
         setMember(res.data)
+        setOptions(
+          conversations.filter((item) => {
+            return !res.data.some((user) => {
+              return item.id === user.user_id
+            })
+          })
+        )
       } catch (error) {
         console.log(error)
       }
@@ -35,11 +48,53 @@ const RightBar = ({ expand, setExpand }) => {
   }, [])
 
   useEffect(() => {
+    console.log(options)
+    setFilter(options?.filter((o) => !selectedItems.includes(o)))
+  }, [options])
+
+  useEffect(() => {
     console.log(member)
   }, [member])
 
-  const addUserGroup = (e) => {
-    console.log('add')
+  const addUserGroup = async (e) => {
+    console.log(selectedItems)
+
+    const data = [
+      {
+        group_id: currentGroupId,
+        user_id: selectedItems,
+      },
+    ]
+
+    const res = await messageApi.post('user-group', data)
+
+    const result = await messageApi.get('/member', {
+      params: {
+        id: currentGroupId,
+      },
+    })
+
+    setMember(result.data)
+    setOptions(
+      conversations.filter((item) => {
+        return !result.data.some((user) => {
+          return item.id === user.user_id
+        })
+      })
+    )
+
+    setSelectedItems([])
+
+    const user = conversations.filter((item) => item.id === selectedItems)
+
+    socket.emit(
+      'create-room',
+      sessionStorage.getItem('id'),
+      currentGroupId,
+      user
+    )
+
+    console.log(res)
   }
 
   return (
@@ -66,15 +121,15 @@ const RightBar = ({ expand, setExpand }) => {
         <p>Tìm kiếm</p> */}
         <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
           <Select
-            placeholder="Inserted are removed"
+            placeholder="Inserted member"
             value={selectedItems}
             onChange={setSelectedItems}
             style={{
               width: '80%',
             }}
-            options={filteredOptions.map((item) => ({
-              value: item,
-              label: item,
+            options={filter?.map((item) => ({
+              value: item.id,
+              label: item.fullname,
             }))}
           />
         </ConfigProvider>

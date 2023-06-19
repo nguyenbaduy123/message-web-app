@@ -9,6 +9,7 @@ import styles from './MainChat.module.css'
 import MessageList from '../MessageList/MessageList'
 import { ChatContext } from '../../context/ChatContext'
 import messageApi from '../../apis/messageApi'
+import { useNavigate } from 'react-router-dom'
 
 const s = classNames.bind(styles)
 
@@ -16,7 +17,7 @@ const { TextArea } = Input
 const MAX_ROWS = 5
 
 const MainChat = ({ expand, setExpand }) => {
-  const userId = sessionStorage.getItem('id')
+  const navigate = useNavigate()
   const { setConversations, currentConversation, userInfo, socket } =
     useContext(ChatContext)
 
@@ -70,6 +71,16 @@ const MainChat = ({ expand, setExpand }) => {
     }
   }
 
+  const handleRedirect = () => {
+    navigate('/profile/about', {
+      state: {
+        user_id: currentConversation.id,
+        item: currentConversation,
+      },
+    })
+    console.log(currentConversation)
+  }
+
   return (
     <div className={s('container')}>
       <div>
@@ -78,6 +89,8 @@ const MainChat = ({ expand, setExpand }) => {
             <Avatar
               src={'//localhost:8080/' + currentConversation?.image_url}
               size={52}
+              onClick={handleRedirect}
+              style={{ cursor: 'pointer' }}
             />
             <div className={s('info-text')}>
               <div className={s('name')}>{currentConversation?.fullname}</div>

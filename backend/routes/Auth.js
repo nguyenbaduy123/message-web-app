@@ -31,10 +31,6 @@ router.route("/login").post(login);
 router.route("/search").post(searchUsers);
 router.route("/:id").get(verifyToken, getUser).put(verifyToken, updateUser);
 
-router.route("/posts").get(verifyToken, (req, res) => {
-  res.json(posts.filter((posts) => posts.userId === req.userId));
-});
-
 router.route("/upload-avatar").post((req, res, next) => {
   multer.upload(req, res, (err) => {
     if (err) {
