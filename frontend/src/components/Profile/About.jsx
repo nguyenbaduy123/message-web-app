@@ -4,9 +4,11 @@ import { IoLocationSharp } from 'react-icons/io5'
 import { FaHome, FaSchool } from 'react-icons/fa'
 import './About.scss'
 import { ChatContext } from '../../context/ChatContext'
+import { useLocation } from 'react-router-dom'
 
 const About = () => {
   const { userInfo, setUserInfo } = useContext(ChatContext)
+  const location = useLocation()
 
   return (
     <div className="about">

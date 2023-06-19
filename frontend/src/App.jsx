@@ -27,7 +27,7 @@ function App() {
       element: (
         <ChatContextProvider>
           <div className={s('container')}>
-            <Layout>
+            <Layout expand={expand} setExpand={setExpand}>
               <main className={s('main-content')}>
                 <div className={s('left-bar')}>
                   <LeftBar expand={expand} setExpand={setExpand} />
@@ -39,7 +39,11 @@ function App() {
 
                 {expand ? (
                   <div className={s('right-bar')}>
-                    <RightBar className={s('right-bar')} />
+                    <RightBar
+                      className={s('right-bar')}
+                      expand={expand}
+                      setExpand={setExpand}
+                    />
                   </div>
                 ) : null}
               </main>
@@ -71,9 +75,9 @@ function App() {
       element: (
         <ChatContextProvider>
           <div className={s('container')}>
-            <Layout>
+            <Layout expand={expand} setExpand={setExpand}>
               <main className={s('main-content')}>
-                <Profile />
+                <Profile expand={expand} setExpand={setExpand} />
               </main>
             </Layout>
           </div>
@@ -97,7 +101,7 @@ function App() {
       element: (
         <ChatContextProvider>
           <div className={s('container')}>
-            <Layout>
+            <Layout expand={expand} setExpand={setExpand}>
               <main className={s('main-content')}>
                 <Notification></Notification>
               </main>

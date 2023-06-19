@@ -3,10 +3,10 @@ import { Outlet } from 'react-router-dom'
 import './Profile.scss'
 import ProfileHeader from './ProfileHeader'
 
-const Profile = () => {
+const Profile = ({ expand, setExpand }) => {
   return (
     <div className="profile">
-      <ProfileHeader></ProfileHeader>
+      <ProfileHeader expand={expand} setExpand={setExpand}></ProfileHeader>
       <Outlet></Outlet>
     </div>
   )

@@ -1,22 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './ProfileHeader.scss'
 import { MdPhotoCamera } from 'react-icons/md'
 import { IconContext } from 'react-icons/lib'
 import { BsExclamationCircle } from 'react-icons/bs'
 import { HiOutlineUserGroup } from 'react-icons/hi'
 import { FiEdit } from 'react-icons/fi'
+import { AiOutlineMessage } from 'react-icons/ai'
 import { ChatContext } from '../../context/ChatContext'
 import userApi from '../../apis/userApi'
 
-const ProfileHeader = () => {
+const ProfileHeader = ({ expand, setExpand }) => {
   const [activeName, setActiveName] = useState('')
   const [activeEdit, setActiveEdit] = useState(false)
   const [activeEditInfo, setActiveEditInfo] = useState(false)
   const { userInfo, setUserInfo } = useContext(ChatContext)
   const [oldInfo, setOldInfo] = useState(null)
+  const { setCurrentGroupId, setCurrentConversationId } =
+    useContext(ChatContext)
 
   const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     console.log(userInfo)
@@ -27,6 +31,7 @@ const ProfileHeader = () => {
   }, [oldInfo])
 
   useEffect(() => {
+    console.log(location.state)
     setOldInfo(userInfo)
   }, [])
 
@@ -35,6 +40,20 @@ const ProfileHeader = () => {
 
     setActiveName(array[2])
   }, [location])
+
+  const checkState = () => {
+    return (
+      location?.state?.user_id == sessionStorage.getItem('id') ||
+      location?.state?.user_id == null
+    )
+  }
+
+  const handleRedirectMsg = (e) => {
+    setCurrentGroupId('0')
+    setCurrentConversationId(location?.state?.user_id)
+    setExpand(false)
+    navigate('/')
+  }
 
   const handleChangeBg = (e) => {
     console.log(e.target.files[0])
@@ -135,44 +154,75 @@ const ProfileHeader = () => {
   return (
     <div className="profile-header">
       <div className="bg">
-        <img src={'//localhost:8080/' + userInfo?.bg_url} alt="" />
+        {checkState() ? (
+          <img src={'//localhost:8080/' + userInfo?.bg_url} alt="" />
+        ) : (
+          <img
+            src={'//localhost:8080/' + location?.state?.item?.bg_url}
+            alt=""
+          />
+        )}
 
-        <label>
+        {checkState() ? (
+          <label>
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              onChange={(e) => handleChangeBg(e)}
+            />
+            <IconContext.Provider value={{ size: '1.4rem' }}>
+              <MdPhotoCamera />
+            </IconContext.Provider>
+            Change cover image
+          </label>
+        ) : (
+          ''
+        )}
+      </div>
+
+      {checkState() ? (
+        <label className="avatar">
           <input
             type="file"
             style={{ display: 'none' }}
-            onChange={(e) => handleChangeBg(e)}
+            onChange={(e) => handleChangeAvatar(e)}
           />
-          <IconContext.Provider value={{ size: '1.4rem' }}>
-            <MdPhotoCamera />
-          </IconContext.Provider>
-          Change cover image
+          <img src={'//localhost:8080/' + userInfo?.image_url} alt="" />
+          <span>
+            <IconContext.Provider value={{ size: '1.5rem' }}>
+              <MdPhotoCamera />
+            </IconContext.Provider>
+          </span>
         </label>
-      </div>
-
-      <label className="avatar">
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          onChange={(e) => handleChangeAvatar(e)}
-        />
-        <img src={'//localhost:8080/' + userInfo?.image_url} alt="" />
-        <span>
-          <IconContext.Provider value={{ size: '1.5rem' }}>
-            <MdPhotoCamera />
-          </IconContext.Provider>
-        </span>
-      </label>
+      ) : (
+        <label className="avatar">
+          <img
+            src={'//localhost:8080/' + location?.state?.item?.image_url}
+            alt=""
+          />
+        </label>
+      )}
 
       <div className="info">
-        <div
-          className={`overview ${
-            activeEditInfo === false ? '' : 'display-none'
-          }`}
-        >
-          <h2>{userInfo?.fullname || sessionStorage.getItem('username')}</h2>
-          <p>{userInfo?.status || 'Developer'}</p>
-        </div>
+        {checkState() ? (
+          <div
+            className={`overview ${
+              activeEditInfo === false ? '' : 'display-none'
+            }`}
+          >
+            <h2>{userInfo?.fullname || sessionStorage.getItem('username')}</h2>
+            <p>{userInfo?.status || 'Developer'}</p>
+          </div>
+        ) : (
+          <div
+            className={`overview ${
+              activeEditInfo === false ? '' : 'display-none'
+            }`}
+          >
+            <h2>{location?.state?.item?.fullname}</h2>
+            <p>{location?.state?.item?.status}</p>
+          </div>
+        )}
 
         <div
           className={`overview ${
@@ -195,17 +245,31 @@ const ProfileHeader = () => {
           />
         </div>
 
-        <div
-          className={`edit ${activeEdit === false ? '' : 'display-none'}`}
-          onClick={handleClickEdit}
-        >
-          <IconContext.Provider value={{ size: '1.2rem' }}>
-            <div className="icon">
-              <FiEdit />
-            </div>
-          </IconContext.Provider>
-          <span>Edit profile</span>
-        </div>
+        {checkState() ? (
+          <div
+            className={`edit ${activeEdit === false ? '' : 'display-none'}`}
+            onClick={handleClickEdit}
+          >
+            <IconContext.Provider value={{ size: '1.2rem' }}>
+              <div className="icon">
+                <FiEdit />
+              </div>
+            </IconContext.Provider>
+            <span>Edit profile</span>
+          </div>
+        ) : (
+          <div
+            className={`edit ${activeEdit === false ? '' : 'display-none'}`}
+            onClick={handleRedirectMsg}
+          >
+            <IconContext.Provider value={{ size: '1.2rem' }}>
+              <div className="icon">
+                <AiOutlineMessage />
+              </div>
+            </IconContext.Provider>
+            <span>Nhắn tin</span>
+          </div>
+        )}
 
         <div
           className={`edit save-profile ${
@@ -223,33 +287,37 @@ const ProfileHeader = () => {
           <span>Cancel</span>
         </div>
       </div>
-
       <div className="navigator">
-        <Link
-          to="./about"
-          className={`${activeName === 'about' ? 'active' : ''}`}
-          onClick={() => setActiveName('about')}
-        >
-          <IconContext.Provider value={{ size: '1.2rem' }}>
-            <div className="icon">
-              <BsExclamationCircle />
-            </div>
-          </IconContext.Provider>
-          <span>About</span>
-        </Link>
-
-        <Link
-          to="./friend"
-          className={`${activeName === 'friend' ? 'active' : ''}`}
-          onClick={() => setActiveName('friend')}
-        >
-          <IconContext.Provider value={{ size: '1.2rem' }}>
-            <div className="icon">
-              <HiOutlineUserGroup />
-            </div>
-          </IconContext.Provider>
-          <span>Friends</span>
-        </Link>
+        {checkState() ? (
+          <>
+            <Link
+              to="./about"
+              className={`${activeName === 'about' ? 'active' : ''}`}
+              onClick={() => setActiveName('about')}
+            >
+              <IconContext.Provider value={{ size: '1.2rem' }}>
+                <div className="icon">
+                  <BsExclamationCircle />
+                </div>
+              </IconContext.Provider>
+              <span>About</span>
+            </Link>
+            <Link
+              to="./friend"
+              className={`${activeName === 'friend' ? 'active' : ''}`}
+              onClick={() => setActiveName('friend')}
+            >
+              <IconContext.Provider value={{ size: '1.2rem' }}>
+                <div className="icon">
+                  <HiOutlineUserGroup />
+                </div>
+              </IconContext.Provider>
+              <span>Friends</span>
+            </Link>
+          </>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   )

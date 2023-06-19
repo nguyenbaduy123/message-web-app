@@ -13,10 +13,21 @@
 
 .search {
   display: flex;
-  flex-direction: column;
+  gap: 1rem;
   justify-content: center;
   align-items: center;
   margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+
+.add {
+  padding: 6px 10px;
+  border-radius: 7px;
+  background-color: #7500f7;
+}
+
+.add:hover {
+  cursor: pointer;
 }
 
 .search-wrapper {

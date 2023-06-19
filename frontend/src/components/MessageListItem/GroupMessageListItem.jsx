@@ -21,9 +21,9 @@ const GroupMessageListItem = ({ message }) => {
         })}
       >
         <div className={s('send-info')}>
-          <span className={s('name')}>{message.fullname}</span>
+          <span className={s('name')}>{message?.fullname}</span>
           <span className={s('time')}>
-            {moment(message.created_at).format('LT')}
+            {moment(message?.created_at).format('LT')}
           </span>
         </div>
         <div style={{ display: 'block' }}>

@@ -51,3 +51,16 @@ exports.getAllMember = async (req, res) => {
     console.error(error);
   }
 };
+
+exports.deleteUserGroup = async (req, res) => {
+  try {
+    const body = req.body;
+    console.log(body);
+    const group = new UserGroupModel(body);
+
+    const result = await GroupService.deleteUserGroup(group);
+    if (result) return res.json(result);
+  } catch (error) {
+    console.error(error);
+  }
+};

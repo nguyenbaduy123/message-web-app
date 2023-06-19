@@ -24,6 +24,18 @@ class UserGroupModel {
       user_id: this.user_id,
     };
   }
+
+  async deleteUserGroup() {
+    const group_user = await db("group_user")
+      .delete()
+      .where("user_id", this.user_id)
+      .andWhere("group_id", this.group_id);
+
+    return {
+      group_id: this.group_id,
+      user_id: this.user_id,
+    };
+  }
 }
 
 module.exports = UserGroupModel;

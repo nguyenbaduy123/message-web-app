@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 
 const s = classNames.bind(styles)
 
-const Sidebar = ({ currentTab }) => {
+const Sidebar = ({ currentTab, expand, setExpand }) => {
   const [activeName, setActiveName] = useState('home')
   const location = useLocation()
 
@@ -26,14 +26,20 @@ const Sidebar = ({ currentTab }) => {
       <Link to="/" className={s(`${activeName === '' ? 'active' : ''}`)}>
         <BsFillChatDotsFill
           className={s('icons', { active: currentTab === 'chat' })}
-          onClick={() => setActiveName('')}
+          onClick={() => {
+            setExpand(false)
+            setActiveName('')
+          }}
         />
       </Link>
 
       <Link
         to="/profile/about"
         className={s(`${activeName === 'profile' ? 'active' : ''}`)}
-        onClick={() => setActiveName('profile')}
+        onClick={() => {
+          setExpand(false)
+          setActiveName('profile')
+        }}
       >
         <CgProfile
           className={s('icons', { active: currentTab === 'edit-profile' })}
@@ -43,7 +49,10 @@ const Sidebar = ({ currentTab }) => {
       <Link
         to="/notification"
         className={s(`${activeName === 'notification' ? 'active' : ''}`)}
-        onClick={() => setActiveName('notification')}
+        onClick={() => {
+          setExpand(false)
+          setActiveName('notification')
+        }}
       >
         <IoMdNotificationsOutline
           className={s('icons', { active: currentTab === 'notification' })}
@@ -54,6 +63,7 @@ const Sidebar = ({ currentTab }) => {
         to="/login"
         className={s(`${activeName === 'logout' ? 'active' : ''}`)}
         onClick={() => {
+          setExpand(false)
           sessionStorage.clear()
           setActiveName('logout')
         }}

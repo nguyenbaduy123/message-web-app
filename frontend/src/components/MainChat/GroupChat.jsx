@@ -46,6 +46,7 @@ const GroupChat = ({ expand, setExpand }) => {
     const currentMsg = {
       user_id: parseInt(sessionStorage.getItem('id')),
       group_id: currentGroupConversation.id,
+      fullname: userInfo?.fullname,
       message: text,
       image_url: userInfo?.image_url,
       created_at: new Date(),

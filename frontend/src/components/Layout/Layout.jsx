@@ -4,10 +4,10 @@ import Sidebar from './Sidebar/Sidebar'
 
 const s = classNames.bind(styles)
 
-const Layout = ({ children, currentTab }) => {
+const Layout = ({ children, currentTab, expand, setExpand }) => {
   return (
     <div className={s('container')}>
-      <Sidebar currentTab={currentTab} />
+      <Sidebar currentTab={currentTab} expand={expand} setExpand={setExpand} />
       <main className={s('main-content')}>{children}</main>
     </div>
   )

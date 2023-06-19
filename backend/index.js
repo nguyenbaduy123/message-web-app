@@ -48,8 +48,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_group_message", (data) => {
-    // console.log(data);
-    io.to(data.group_id).emit("receive_group_message", data);
+    console.log(data);
+    if (socket.rooms.has(data.group_id))
+      io.to(data.group_id).emit("receive_group_message", data);
+    else io.to(data.user_id).emit("forbidden");
   });
 
   socket.on("init-room", (user_id, data) => {
@@ -57,6 +59,15 @@ io.on("connection", (socket) => {
       socket.join(item.id);
       // console.log(">>> Nguoi dung " + user_id + " da tham gia nhom " + item.id);
     });
+  });
+
+  socket.on("leave-room", (group_id) => {
+    socket.leave(group_id);
+    console.log(">>> Leave room " + group_id);
+  });
+
+  socket.on("remove-user", (user_id, group_id) => {
+    socket.to(users[user_id]).emit("listen-remove", group_id);
   });
 
   socket.on("create-room", (user_id, group_id, choosenMember) => {
