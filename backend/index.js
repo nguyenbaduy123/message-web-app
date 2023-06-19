@@ -43,7 +43,6 @@ io.on("connection", (socket) => {
 
   socket.on("send_message", (data) => {
     // socket.broadcast.emit("receive_message", data);
-    console.log(data);
     io.to(users[data.to_id]).emit("receive_message", data);
     io.to(users[data.from_id]).emit("receive_message", data);
   });

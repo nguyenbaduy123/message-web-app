@@ -46,10 +46,9 @@ class GroupModel {
 
     allGroup = await Promise.all(
       allGroup.map(async (item) => {
-        const groupMessage = await db("group_message").where(
-          "group_id",
-          item.id
-        );
+        const groupMessage = await db("group_message")
+          .join("users", "users.id", "=", "group_message.user_id")
+          .where("group_id", item.id);
 
         return { ...item, messages: groupMessage };
       })

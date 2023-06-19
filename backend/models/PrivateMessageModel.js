@@ -65,6 +65,7 @@ class PrivateMessageModel {
     const res = await Promise.all(
       users.map(async (user) => {
         const msg = await db("private_message")
+          .join("users", "users.id", "=", "private_message.from_id")
           .where("from_id", user.id)
           .andWhere("to_id", id)
           .orWhere("to_id", user.id)

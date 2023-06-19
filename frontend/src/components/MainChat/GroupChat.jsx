@@ -18,14 +18,13 @@ const MAX_ROWS = 5
 
 const GroupChat = ({ expand, setExpand }) => {
   const userId = sessionStorage.getItem('id')
-  const { setGroupConversation, currentGroupConversation, socket } =
+  const { setGroupConversation, currentGroupConversation, userInfo, socket } =
     useContext(ChatContext)
 
   const [currentText, setCurrentText] = useState('')
 
   useEffect(() => {
     socket.on('receive_group_message', (data) => {
-      console.log(data)
       setGroupConversation((prevConversations) =>
         prevConversations.map((conv) =>
           data.group_id === conv.id
@@ -38,7 +37,6 @@ const GroupChat = ({ expand, setExpand }) => {
       )
       setCurrentText('')
     })
-
     return () => socket.off('receive_group_message')
   }, [socket])
 
@@ -49,6 +47,7 @@ const GroupChat = ({ expand, setExpand }) => {
       user_id: parseInt(sessionStorage.getItem('id')),
       group_id: currentGroupConversation.id,
       message: text,
+      image_url: userInfo?.image_url,
       created_at: new Date(),
       updated_at: new Date(),
     }

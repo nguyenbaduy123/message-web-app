@@ -17,14 +17,13 @@ const MAX_ROWS = 5
 
 const MainChat = ({ expand, setExpand }) => {
   const userId = sessionStorage.getItem('id')
-  const { setConversations, currentConversation, socket } =
+  const { setConversations, currentConversation, userInfo, socket } =
     useContext(ChatContext)
 
   const [currentText, setCurrentText] = useState('')
 
   useEffect(() => {
     socket.on('receive_message', (data) => {
-      console.log(data)
       setConversations((prevConversations) =>
         prevConversations.map((conv) =>
           data.to_id === conv.id || data.from_id === conv.id
@@ -48,6 +47,7 @@ const MainChat = ({ expand, setExpand }) => {
       from_id: parseInt(sessionStorage.getItem('id')),
       to_id: currentConversation.id,
       message: text,
+      image_url: userInfo?.image_url,
       created_at: new Date(),
       updated_at: new Date(),
     }
@@ -55,7 +55,6 @@ const MainChat = ({ expand, setExpand }) => {
     ;(async () => {
       try {
         const data = messageApi.post('/private', currentMsg)
-        console.log('Insert success')
       } catch (error) {
         console.log(error)
       }
