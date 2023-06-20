@@ -39,6 +39,9 @@ export const ChatContextProvider = ({ children }) => {
       ;(async () => {
         try {
           const res = await messageApi.get('/private', {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            },
             params: {
               id: sessionStorage.getItem('id'),
             },
@@ -53,6 +56,9 @@ export const ChatContextProvider = ({ children }) => {
       ;(async () => {
         try {
           const res = await messageApi.get('/group', {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            },
             params: {
               id: sessionStorage.getItem('id'),
             },
@@ -65,7 +71,11 @@ export const ChatContextProvider = ({ children }) => {
       })()
       ;(async () => {
         try {
-          const res = await userApi.get('/' + sessionStorage.getItem('id'))
+          const res = await userApi.get('/' + sessionStorage.getItem('id'), {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            },
+          })
           setUserInfo(res.data.user)
         } catch (error) {
           console.log(error)
