@@ -58,7 +58,7 @@ const MainChat = ({ expand, setExpand }) => {
       fullname: userInfo.fullname,
       message_img: file?.name || null,
     }
-    socket.emit('send_message', currentMsg)
+
     try {
       const data = await messageApi.post('/private', currentMsg)
 
@@ -81,6 +81,8 @@ const MainChat = ({ expand, setExpand }) => {
     } catch (error) {
       console.log(error)
     }
+
+    socket.emit('send_message', currentMsg)
 
     setCurrentText('')
   }

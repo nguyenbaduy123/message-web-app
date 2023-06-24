@@ -57,7 +57,7 @@ const GroupChat = ({ expand, setExpand }) => {
       updated_at: new Date(),
       message_img: file?.name || null,
     }
-    socket.emit('send_group_message', currentMsg)
+
     try {
       const data = await messageApi.post('/group', currentMsg)
       console.log('Insert success')
@@ -83,6 +83,8 @@ const GroupChat = ({ expand, setExpand }) => {
     } catch (error) {
       console.log(error)
     }
+
+    socket.emit('send_group_message', currentMsg)
 
     setCurrentText('')
   }
