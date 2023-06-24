@@ -21,9 +21,9 @@ const MessageListItem = ({ message }) => {
         })}
       >
         <div className={s('send-info')}>
-          <span className={s('name')}>{message.fullname}</span>
+          <span className={s('name')}>{message?.fullname}</span>
           <span className={s('time')}>
-            {moment(message.created_at).format('LT')}
+            {moment(message?.created_at).format('LT')}
           </span>
         </div>
         <div style={{ display: 'block' }}>
@@ -32,6 +32,16 @@ const MessageListItem = ({ message }) => {
             dangerouslySetInnerHTML={{ __html: displayMessage }}
           />
         </div>
+
+        {message?.message_img ? (
+          <div className={s('image-wrapper')}>
+            <div className={s('image')}>
+              <img src={'//localhost:8080/' + message?.message_img} alt="" />
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   )

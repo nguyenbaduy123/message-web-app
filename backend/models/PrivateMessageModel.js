@@ -13,6 +13,7 @@ class PrivateMessageModel {
     this.message = msg.message || null;
     this.created_at = msg.created_at || null;
     this.updated_at = msg.updated_at || null;
+    this.message_img = msg.message_img || null;
   }
 
   async save() {
@@ -22,7 +23,7 @@ class PrivateMessageModel {
     );
 
     console.log("Saved");
-    return result;
+    return { id: result[0].insertId };
   }
 
   static async findAll() {
@@ -78,6 +79,14 @@ class PrivateMessageModel {
     res.map((data) => (allData = [...allData, data]));
 
     if (allData) return allData;
+  }
+
+  static async saveImage(id, message_img) {
+    const res = await db("private_message").where("id", id).update({
+      message_img: message_img,
+    });
+
+    return res;
   }
 }
 

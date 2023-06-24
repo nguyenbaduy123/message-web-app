@@ -59,16 +59,46 @@ const Chat = ({ expand, setExpand }) => {
           })
           console.log(res)
           setConversations([...res.data])
-          setCurrentConversationId(res.data[0].id)
+          // setCurrentConversationId(res.data[0].id)
         } catch (error) {
           console.log(error)
         }
       })()
     })
 
+    socket.on('receive_group_message', (data) => {
+      console.log('>>> Receive group Message')
+      setGroupConversation((prevConversations) =>
+        prevConversations.map((conv) =>
+          data.group_id === conv.id
+            ? {
+                ...conv,
+                messages: [...conv.messages, { ...data }],
+              }
+            : conv
+        )
+      )
+    })
+
+    socket.on('receive_message', (data) => {
+      setConversations((prevConversations) =>
+        prevConversations.map((conv) =>
+          data.to_id === conv.id || data.from_id === conv.id
+            ? {
+                ...conv,
+                messages: [...conv.messages, { ...data }],
+              }
+            : conv
+        )
+      )
+    })
+
     return () => {
       socket.off('request-join')
       socket.off('listen-remove')
+      socket.off('connected-listener')
+      socket.off('receive_group_message')
+      socket.off('receive_message')
     }
   }, [socket])
 

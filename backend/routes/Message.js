@@ -16,6 +16,8 @@ const {
 const { saveMsg } = require("../controllers/PrivateMessageController");
 const { saveGroupMsg } = require("../controllers/GroupMessageController");
 const GroupModel = require("../models/GroupModel");
+const PrivateMessageModel = require("../models/PrivateMessageModel");
+const GroupMessageModel = require("../models/GroupMessageModel");
 const router = express.Router();
 
 router.route("/private").get(getAllPrivateMessage).post(saveMsg);
@@ -32,6 +34,30 @@ router.route("/upload-avatar").post((req, res, next) => {
     }
 
     GroupModel.saveImage(req.body.id, req.file.originalname);
+    return res.status(200).send(req.file);
+  });
+});
+
+router.route("/private-image").post((req, res, next) => {
+  multer.upload(req, res, (err) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+
+    PrivateMessageModel.saveImage(req.body.id, req.file.originalname);
+
+    return res.status(200).send(req.file);
+  });
+});
+
+router.route("/group-image").post((req, res, next) => {
+  multer.upload(req, res, (err) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+
+    GroupMessageModel.saveImage(req.body.id, req.file.originalname);
+
     return res.status(200).send(req.file);
   });
 });

@@ -32,6 +32,16 @@ const GroupMessageListItem = ({ message }) => {
             dangerouslySetInnerHTML={{ __html: displayMessage }}
           />
         </div>
+
+        {message?.message_img ? (
+          <div className={s('image-wrapper')}>
+            <div className={s('image')}>
+              <img src={'//localhost:8080/' + message?.message_img} alt="" />
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   )

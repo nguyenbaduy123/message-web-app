@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames/bind'
-import { Avatar, Input } from 'antd'
+import { Avatar, Input, message } from 'antd'
 import io from 'socket.io-client'
 import { BsFillCameraVideoFill, BsFillTelephoneFill } from 'react-icons/bs'
 import { FaEllipsisH } from 'react-icons/fa'
@@ -10,6 +10,9 @@ import MessageList from '../MessageList/MessageList'
 import { ChatContext } from '../../context/ChatContext'
 import messageApi from '../../apis/messageApi'
 import { useNavigate } from 'react-router-dom'
+import { MdOutlinePhotoLibrary } from 'react-icons/md'
+import { IconContext } from 'react-icons/lib'
+import { IoMdCloseCircle } from 'react-icons/io'
 
 const s = classNames.bind(styles)
 
@@ -22,26 +25,27 @@ const MainChat = ({ expand, setExpand }) => {
     useContext(ChatContext)
 
   const [currentText, setCurrentText] = useState('')
+  const [file, setFile] = useState(null)
+  const fileRef = useRef()
 
   useEffect(() => {
-    socket.on('receive_message', (data) => {
-      setConversations((prevConversations) =>
-        prevConversations.map((conv) =>
-          data.to_id === conv.id || data.from_id === conv.id
-            ? {
-                ...conv,
-                messages: [...conv.messages, { ...data }],
-              }
-            : conv
-        )
-      )
-      setCurrentText('')
-    })
-
-    return () => socket.off('receive_message')
+    // socket.on('receive_message', (data) => {
+    //   setConversations((prevConversations) =>
+    //     prevConversations.map((conv) =>
+    //       data.to_id === conv.id || data.from_id === conv.id
+    //         ? {
+    //             ...conv,
+    //             messages: [...conv.messages, { ...data }],
+    //           }
+    //         : conv
+    //     )
+    //   )
+    //   setCurrentText('')
+    // })
+    // return () => socket.off('receive_message')
   }, [socket])
 
-  const handleSend = () => {
+  const handleSend = async () => {
     let text = currentText.trim()
     if (text === '') return
     const currentMsg = {
@@ -51,15 +55,34 @@ const MainChat = ({ expand, setExpand }) => {
       image_url: userInfo?.image_url,
       created_at: new Date(),
       updated_at: new Date(),
+      fullname: userInfo.fullname,
+      message_img: file?.name || null,
     }
     socket.emit('send_message', currentMsg)
-    ;(async () => {
-      try {
-        const data = messageApi.post('/private', currentMsg)
-      } catch (error) {
-        console.log(error)
+    try {
+      const data = await messageApi.post('/private', currentMsg)
+
+      const formData = new FormData()
+      if (file != null) {
+        formData.set('file', file)
+        formData.set('id', data.data.id)
+
+        const result = await messageApi.post('private-image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+
+        setFile(null)
+        fileRef.current.value = null
+      } else {
+        console.log('File null')
       }
-    })()
+    } catch (error) {
+      console.log(error)
+    }
+
+    setCurrentText('')
   }
 
   const handleKeyDown = (event) => {
@@ -79,6 +102,22 @@ const MainChat = ({ expand, setExpand }) => {
       },
     })
     console.log(currentConversation)
+  }
+
+  const handleMessageImg = (e) => {
+    if (e.target.files) {
+      if (
+        e.target.files[0]?.type === 'image/png' ||
+        e.target.files[0]?.type === 'image/jpeg'
+      ) {
+        setFile(e.target.files[0])
+      }
+    }
+  }
+
+  const removeImg = (e) => {
+    setFile(null)
+    fileRef.current.value = null
   }
 
   return (
@@ -105,16 +144,46 @@ const MainChat = ({ expand, setExpand }) => {
         </div>
         <MessageList />
       </div>
-      <TextArea
-        className={s('input')}
-        resize="none"
-        autoSize={{ minRows: 0, maxRows: MAX_ROWS }}
-        value={currentText}
-        onChange={(e) => setCurrentText(e.target.value)}
-        placeholder="Your message"
-        onKeyDown={handleKeyDown}
-        style={{ resize: 'none' }}
-      />
+      <div className={s('chat-nav')}>
+        <TextArea
+          className={s('input')}
+          resize="none"
+          autoSize={{ minRows: 0, maxRows: MAX_ROWS }}
+          value={currentText}
+          onChange={(e) => setCurrentText(e.target.value)}
+          placeholder="Your message"
+          onKeyDown={handleKeyDown}
+          style={{ resize: 'none' }}
+        />
+        {file ? (
+          <div className={s('preview-image')}>
+            <div className={s('remove-img')} onClick={removeImg}>
+              <IconContext.Provider
+                value={{ size: '1.5rem', color: 'rgb(49, 51, 56, 0.9)' }}
+              >
+                <IoMdCloseCircle />
+              </IconContext.Provider>
+            </div>
+            <img src={URL.createObjectURL(file)} alt="" />
+          </div>
+        ) : (
+          ''
+        )}
+
+        <div className={s('photo-wrapper')}>
+          <label>
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              onChange={(e) => handleMessageImg(e)}
+              ref={fileRef}
+            />
+            <IconContext.Provider value={{ size: '1.5rem', color: '#218dfa' }}>
+              <MdOutlinePhotoLibrary />
+            </IconContext.Provider>
+          </label>
+        </div>
+      </div>
     </div>
   )
 }

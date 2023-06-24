@@ -19,7 +19,7 @@ const GroupMessageList = () => {
 
   return (
     <div className={s('container')} ref={containerRef}>
-      {currentGroupConversation?.messages.map((message, index) => (
+      {currentGroupConversation?.messages?.map((message, index) => (
         <GroupMessageListItem key={index} message={message} />
       ))}
     </div>

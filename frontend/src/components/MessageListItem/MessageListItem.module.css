@@ -41,3 +41,30 @@
   margin-left: 8px;
   font-weight: 400;
 }
+
+.image {
+  margin-top: 0.5rem;
+  width: 18rem;
+  height: 12rem;
+}
+
+.image img {
+  float: right;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.me .image {
+  float: right;
+}
+
+.me {
+  display: flex;
+  flex-direction: column;
+}
+
+.image-wrapper {
+  display: block;
+}

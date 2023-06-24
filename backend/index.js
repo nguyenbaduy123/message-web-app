@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
   socket.on("init-room", (user_id, data) => {
     data.map((item) => {
       socket.join(item.id);
-      // console.log(">>> Nguoi dung " + user_id + " da tham gia nhom " + item.id);
+      console.log(">>> Nguoi dung " + user_id + " da tham gia nhom " + item.id);
     });
   });
 

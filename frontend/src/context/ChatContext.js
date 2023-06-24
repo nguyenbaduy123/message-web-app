@@ -33,6 +33,14 @@ export const ChatContextProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    console.log(groupConversation)
+  }, [groupConversation])
+
+  useEffect(() => {
+    console.log(conversations)
+  }, [conversations])
+
+  useEffect(() => {
     if (sessionStorage.getItem('username') == null) {
       navigate('/login')
     } else {

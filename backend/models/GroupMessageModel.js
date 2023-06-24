@@ -1,5 +1,9 @@
 const query = require("../db/database");
 const bcrypt = require("bcryptjs");
+const knex = require("knex");
+const knexConfig = require("../knexfile");
+
+const db = knex(knexConfig.development);
 
 class GroupMessageModel {
   constructor(msg) {
@@ -9,17 +13,16 @@ class GroupMessageModel {
     this.message = msg.message || null;
     this.created_at = msg.created_at || null;
     this.updated_at = msg.updated_at || null;
+    this.message_img = msg.message_img || null;
   }
 
   async save() {
-    await query(
+    const rows = await query(
       "INSERT INTO group_message (group_id, user_id, message) VALUES (?, ?, ?);",
       [this.group_id, this.user_id, this.message]
     );
 
-    console.log(this.message);
-    console.log("Saved");
-    return true;
+    return { id: rows[0].insertId };
   }
 
   static async findAll() {
@@ -41,6 +44,14 @@ class GroupMessageModel {
     console.log(rows);
 
     return rows;
+  }
+
+  static async saveImage(id, message_img) {
+    const res = await db("group_message").where("id", id).update({
+      message_img: message_img,
+    });
+
+    return res;
   }
 }
 
