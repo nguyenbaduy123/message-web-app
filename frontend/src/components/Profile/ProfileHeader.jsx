@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './ProfileHeader.scss'
 import { MdPhotoCamera } from 'react-icons/md'
@@ -21,6 +21,7 @@ const ProfileHeader = ({ expand, setExpand }) => {
 
   const location = useLocation()
   const navigate = useNavigate()
+  const windowWidth = useRef(window.innerWidth)
 
   useEffect(() => {
     console.log(userInfo)
@@ -173,7 +174,7 @@ const ProfileHeader = ({ expand, setExpand }) => {
             <IconContext.Provider value={{ size: '1.4rem' }}>
               <MdPhotoCamera />
             </IconContext.Provider>
-            Change cover image
+            {windowWidth.current <= 600 ? '' : 'Change cover image'}
           </label>
         ) : (
           ''

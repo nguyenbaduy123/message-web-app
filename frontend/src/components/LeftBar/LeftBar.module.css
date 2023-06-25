@@ -34,6 +34,9 @@
 
 @media only screen and (max-width: 768px) {
   .list-conversation {
+    width: 100%;
     display: inline-block;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 }

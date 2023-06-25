@@ -129,7 +129,9 @@ const Friend = ({ expand, setExpand }) => {
           {friendList.map((item) => (
             <div className="member">
               <div className="user">
-                <Avatar src={`//localhost:8080/` + item.image_url} size={40} />
+                <div className="image-wrap">
+                  <img src={`//localhost:8080/` + item.image_url} alt="" />
+                </div>
 
                 <div className={'info'}>{item.fullname}</div>
               </div>
@@ -186,7 +188,9 @@ const Friend = ({ expand, setExpand }) => {
           {notFriendList.map((item) => (
             <div className="member">
               <div className="user">
-                <Avatar src={`//localhost:8080/` + item.image_url} size={40} />
+                <div className="image-wrap">
+                  <img src={`//localhost:8080/` + item.image_url} alt="" />
+                </div>
 
                 <div className={'info'}>{item.fullname}</div>
               </div>

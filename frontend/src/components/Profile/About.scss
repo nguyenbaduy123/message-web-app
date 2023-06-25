@@ -1,3 +1,25 @@
+$mobile-width: 600px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
+@mixin mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 700px) and (max-width: 999px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
 .about {
   position: relative;
   padding: 1rem;
@@ -9,6 +31,9 @@
 
   h2 {
     margin: 0 0 1rem 0;
+    @include mobile {
+      font-size: 1.5rem;
+    }
   }
 
   .description {
@@ -35,7 +60,7 @@ $gray: #9b9b9b;
   position: relative;
   padding: 15px 0 0;
   margin-top: 1rem;
-  width: 40%;
+  width: 80%;
 }
 
 .form__field {
@@ -107,6 +132,10 @@ $gray: #9b9b9b;
   border-radius: 7px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+
+  @include mobile() {
+    right: 0.5rem;
+  }
   .icon {
     display: flex;
     justify-content: center;

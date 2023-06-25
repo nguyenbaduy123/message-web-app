@@ -33,7 +33,6 @@ const GroupCard = ({ conversation, expand, setExpand }) => {
           <div className={s('last-message')}>
             {conversation?.messages[conversation?.messages.length - 1]?.message}
           </div>
-          <div className={s('time')}>10:00 am</div>
         </div>
       </div>
     </div>
