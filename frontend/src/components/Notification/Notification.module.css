@@ -1,6 +1,5 @@
 .notification {
   width: 100%;
-  margin: 0 2rem;
   height: 85%;
 }
 
@@ -84,4 +83,36 @@
 .add:hover,
 .remove:hover {
   cursor: pointer;
+}
+
+@media all and (max-width: 768px) {
+  .container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media all and (max-width: 1000px) and (min-width: 768px) {
+  .container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media all and (max-width: 480px) {
+  .info h2 {
+    font-size: 1rem;
+  }
+
+  .info p {
+    font-size: 0.8rem;
+  }
+
+  .add,
+  .remove {
+    font-size: 0.8rem;
+  }
+
+  .image-wrapper {
+    width: 5rem;
+    height: 5rem;
+  }
 }

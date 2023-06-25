@@ -31,3 +31,9 @@
 .add-group:hover {
   cursor: pointer;
 }
+
+@media only screen and (max-width: 768px) {
+  .list-conversation {
+    display: inline-block;
+  }
+}

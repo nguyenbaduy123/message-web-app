@@ -114,8 +114,10 @@ function LeftBar({ expand, setExpand }) {
         </Dropdown>
       </ConfigProvider>
 
-      <div className={s('list-conversation')}>{renderListConverstion}</div>
-      <div className={s('list-conversation')}>{renderGroupConversation}</div>
+      <div className={s('conversation-wrapper')}>
+        <div className={s('list-conversation')}>{renderListConverstion}</div>
+        <div className={s('list-conversation')}>{renderGroupConversation}</div>
+      </div>
     </div>
   )
 }

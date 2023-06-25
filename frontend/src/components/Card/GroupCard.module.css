@@ -16,10 +16,6 @@
   gap: 2px;
 }
 
-.avatar {
-  width: 18%;
-}
-
 .text {
   margin-left: 5px;
   position: relative;
@@ -55,4 +51,40 @@
 
 .active {
   background-color: var(--dark2) !important;
+}
+
+@media all and (max-width: 1000px) {
+  .time {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    display: inline-block;
+    width: auto;
+  }
+
+  .information {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .last-message {
+    display: none;
+  }
+
+  .receiver {
+    font-size: 0.8rem;
+  }
+
+  .text {
+    text-align: center;
+    margin: 0;
+  }
+
+  .container {
+    height: auto;
+  }
 }

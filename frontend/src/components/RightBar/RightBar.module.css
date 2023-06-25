@@ -103,3 +103,30 @@
 .popover {
   position: absolute;
 }
+
+@media only screen and (max-width: 999px) {
+  .image-wrapper > span {
+    width: 50px !important;
+    height: 50px !important;
+    line-height: 50px !important;
+    font-size: 14px !important;
+  }
+
+  .name,
+  .state {
+    font-size: 14px;
+  }
+
+  .container {
+    padding-left: 10px;
+  }
+
+  .search {
+    gap: 0.5rem;
+    font-size: 12px;
+  }
+
+  .member-list {
+    font-size: 12px;
+  }
+}

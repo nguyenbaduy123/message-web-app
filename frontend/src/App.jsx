@@ -28,24 +28,27 @@ function App() {
         <ChatContextProvider>
           <div className={s('container')}>
             <Layout expand={expand} setExpand={setExpand}>
-              <main className={s('main-content')}>
-                <div className={s('left-bar')}>
+              <main className={s('main-content', 'chat-mobile')}>
+                <div className={s('left-bar', 'left-bar-mobile')}>
                   <LeftBar expand={expand} setExpand={setExpand} />
                 </div>
-                <div className={s('main-chat', `${expand ? 'expand' : ''}`)}>
-                  <Chat expand={expand} setExpand={setExpand} />
-                  <Group />
-                </div>
 
-                {expand ? (
-                  <div className={s('right-bar')}>
-                    <RightBar
-                      className={s('right-bar')}
-                      expand={expand}
-                      setExpand={setExpand}
-                    />
+                <div className={s('chat-wrap')}>
+                  <div className={s('main-chat', `${expand ? 'expand' : ''}`)}>
+                    <Chat expand={expand} setExpand={setExpand} />
+                    <Group />
                   </div>
-                ) : null}
+
+                  {expand ? (
+                    <div className={s('right-bar')}>
+                      <RightBar
+                        className={s('right-bar')}
+                        expand={expand}
+                        setExpand={setExpand}
+                      />
+                    </div>
+                  ) : null}
+                </div>
               </main>
             </Layout>
           </div>
