@@ -42,68 +42,128 @@ export const Register = () => {
   }
 
   return (
-    <div className={s('container')}>
-      <div className={s('authForm')}>
-        <h1>Register</h1>
-        <form className={s('formRegister')} onSubmit={handleSubmit}>
-          <label className={s('formLabel')} htmlFor="username">
-            User Name
-          </label>
-          <input
-            className={s('formInput')}
-            value={userName}
-            name="username"
-            onChange={(e) => setUserName(e.target.value)}
-            id="username"
-            placeholder="User Name"
-          />
+    <>
+      {/* <div className={s('container')}>
+        <div className={s('authForm')}>
+          <h1>Register</h1>
+          <form className={s('formRegister')} onSubmit={handleSubmit}>
+            <label className={s('formLabel')} htmlFor="username">
+              User Name
+            </label>
+            <input
+              className={s('formInput')}
+              value={userName}
+              name="username"
+              onChange={(e) => setUserName(e.target.value)}
+              id="username"
+              placeholder="User Name"
+            />
 
-          <label className={s('formLabel')} htmlFor="fullname">
-            Full Name
-          </label>
-          <input
-            className={s('formInput')}
-            value={fullName}
-            name="fullname"
-            onChange={(e) => setFullName(e.target.value)}
-            id="fullname"
-            placeholder="Full Name"
-          />
+            <label className={s('formLabel')} htmlFor="fullname">
+              Full Name
+            </label>
+            <input
+              className={s('formInput')}
+              value={fullName}
+              name="fullname"
+              onChange={(e) => setFullName(e.target.value)}
+              id="fullname"
+              placeholder="Full Name"
+            />
 
-          <label className={s('formLabel')} htmlFor="email">
-            Email
-          </label>
-          <input
-            className={s('formInput')}
-            value={email}
-            type="email"
-            id="email"
-            placeholder="abc@gmail.com"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            <label className={s('formLabel')} htmlFor="email">
+              Email
+            </label>
+            <input
+              className={s('formInput')}
+              value={email}
+              type="email"
+              id="email"
+              placeholder="abc@gmail.com"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-          <label className={s('formLabel')} htmlFor="password">
-            Password
-          </label>
-          <input
-            className={s('formInput')}
-            value={password}
-            type="password"
-            id="password"
-            placeholder="********"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button className={s('formButton')} type="submit">
-            Register
+            <label className={s('formLabel')} htmlFor="password">
+              Password
+            </label>
+            <input
+              className={s('formInput')}
+              value={password}
+              type="password"
+              id="password"
+              placeholder="********"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className={s('formButton')} type="submit">
+              Register
+            </button>
+          </form>
+
+          <button className={s('link-btn')} onClick={() => navigate('/login')}>
+            Already have an account? Login here.
           </button>
-        </form>
+        </div>
+      </div> */}
 
-        <button className={s('link-btn')} onClick={() => navigate('/login')}>
-          Already have an account? Login here.
-        </button>
+      <div className={s('app')}>
+        <form onSubmit={handleSubmit}>
+          <h1>Register</h1>
+
+          <div className={s('formInput')}>
+            <label>Username</label>
+            <input
+              value={userName}
+              name="username"
+              onChange={(e) => setUserName(e.target.value)}
+              id="username"
+              placeholder="Username"
+            />
+          </div>
+
+          <div className={s('formInput')}>
+            <label>Fullname</label>
+            <input
+              value={fullName}
+              name="fullname"
+              onChange={(e) => setFullName(e.target.value)}
+              id="fullname"
+              placeholder="Full Name"
+            />
+          </div>
+
+          <div className={s('formInput')}>
+            <label>Password</label>
+            <input
+              value={email}
+              type="email"
+              id="email"
+              placeholder="example@gmail.com"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className={s('formInput')}>
+            <label>Password</label>
+            <input
+              value={password}
+              type="password"
+              id="password"
+              placeholder="Your password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button>Register</button>
+
+          <div className={s('link-btn')} onClick={() => navigate('/login')}>
+            Already have an account? Login here.
+          </div>
+        </form>
       </div>
-    </div>
+    </>
   )
 }

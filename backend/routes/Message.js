@@ -11,6 +11,7 @@ const {
   getAllGroupMessage,
   getAllMember,
   deleteUserGroup,
+  updateGroup,
 } = require("../controllers/GroupController");
 
 const { saveMsg } = require("../controllers/PrivateMessageController");
@@ -22,7 +23,11 @@ const router = express.Router();
 
 router.route("/private").get(getAllPrivateMessage).post(saveMsg);
 
-router.route("/group").get(getAllGroupMessage).post(saveGroupMsg);
+router
+  .route("/group")
+  .get(getAllGroupMessage)
+  .post(saveGroupMsg)
+  .put(updateGroup);
 router.route("/new-group").post(saveGroup);
 router.route("/user-group").post(saveUserGroup).delete(deleteUserGroup);
 router.route("/member").get(getAllMember);

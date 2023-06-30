@@ -1,9 +1,5 @@
 const query = require("../db/database");
-const knex = require("knex");
-
-const knexConfig = require("../knexfile");
-
-const db = knex(knexConfig.development);
+const db = require("../db/db_instance");
 
 class GroupModel {
   constructor(group) {
@@ -67,6 +63,14 @@ class GroupModel {
     // console.log(rows[0]);
 
     return rows[0];
+  }
+
+  async updateGroup() {
+    const res = await db("groups").where("id", this.id).update({
+      name: this.name,
+    });
+
+    return res;
   }
 }
 

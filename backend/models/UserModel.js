@@ -1,9 +1,6 @@
 const query = require("../db/database");
+const db = require("../db/db_instance");
 const bcrypt = require("bcryptjs");
-const knex = require("knex");
-const knexConfig = require("../knexfile");
-
-const db = knex(knexConfig.development);
 
 class UserModel {
   constructor(user) {

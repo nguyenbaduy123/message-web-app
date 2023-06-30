@@ -13,3 +13,7 @@ exports.getAllMember = async (group) => {
 exports.deleteUserGroup = async (group) => {
   return await group.deleteUserGroup();
 };
+
+exports.updateGroup = async (group) => {
+  return await group.updateGroup();
+};

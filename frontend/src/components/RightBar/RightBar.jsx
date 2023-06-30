@@ -7,6 +7,8 @@ import { IconContext } from 'react-icons'
 import { BsThreeDots } from 'react-icons/bs'
 import messageApi from '../../apis/messageApi'
 import Popover from './Popover'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { MdPhotoCamera } from 'react-icons/md'
 
 const s = classNames.bind(styles)
 
@@ -23,6 +25,8 @@ const RightBar = ({ expand, setExpand }) => {
   const [filter, setFilter] = useState(null)
   const [member, setMember] = useState([])
   const [activePopOver, setActivePopOver] = useState(0)
+  const [activeEdit, setActiveEdit] = useState(false)
+  const [groupName, setGroupName] = useState(null)
 
   useEffect(() => {
     ;(async () => {
@@ -45,6 +49,8 @@ const RightBar = ({ expand, setExpand }) => {
         console.log(error)
       }
     })()
+
+    setGroupName(currentGroupConversation?.name)
   }, [])
 
   useEffect(() => {
@@ -97,17 +103,105 @@ const RightBar = ({ expand, setExpand }) => {
     console.log(res)
   }
 
+  const handleEditName = async (e) => {
+    if (activeEdit == true) {
+      setGroupConversation((prevConversation) =>
+        prevConversation.map((conv) =>
+          conv.id === currentGroupConversation.id
+            ? {
+                ...conv,
+                name: groupName,
+              }
+            : conv
+        )
+      )
+
+      const res = await messageApi.put('/group', {
+        id: currentGroupConversation?.id,
+        name: groupName,
+      })
+
+      console.log(res)
+    }
+
+    setActiveEdit(!activeEdit)
+  }
+
+  const handleChangeAvatar = (e) => {
+    console.log(e.target.files[0])
+    if (e.target.files) {
+      if (
+        e.target.files[0].type === 'image/png' ||
+        e.target.files[0].type === 'image/jpeg'
+      ) {
+        const formData = new FormData()
+        formData.set('file', e.target.files[0])
+        formData.set('id', currentGroupConversation?.id)
+        ;(async () => {
+          try {
+            const res = await messageApi.post('upload-avatar', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            })
+
+            setGroupConversation((prevConversation) =>
+              prevConversation.map((conv) =>
+                conv.id === currentGroupConversation.id
+                  ? {
+                      ...conv,
+                      image_url: e.target.files[0].name,
+                    }
+                  : conv
+              )
+            )
+          } catch (error) {
+            console.log(error)
+          }
+        })()
+      }
+    }
+  }
+
   return (
     <div className={s('container')}>
       <div className={s('image-wrapper')}>
-        <Avatar
-          src={`//localhost:8080/` + currentGroupConversation?.image_url}
-          size={80}
-        />
+        <label className={s('avatar-wrapper')}>
+          <input
+            type="file"
+            style={{ display: 'none' }}
+            onChange={(e) => handleChangeAvatar(e)}
+          />
+          <Avatar
+            src={`//localhost:8080/` + currentGroupConversation?.image_url}
+            size={80}
+          />
+          <span className={s('avatar-icon')}>
+            <IconContext.Provider value={{ size: '1.5rem' }}>
+              <MdPhotoCamera />
+            </IconContext.Provider>
+          </span>
+        </label>
 
         <div className={s('info-text')}>
-          <div className={s('name')}>{currentGroupConversation?.name}</div>
-          <div className={s('state')}>Online</div>
+          <div className={s('name', `${activeEdit ? 'display-none' : ''}`)}>
+            {currentGroupConversation?.name}
+          </div>
+          <div
+            className={s('edit-name', `${activeEdit ? '' : 'display-none'}`)}
+          >
+            <input
+              type="text"
+              value={groupName}
+              onChange={(e) => setGroupName((prev) => e.target.value)}
+            />
+          </div>
+
+          <div className={s('edit-icon')} onClick={(e) => handleEditName(e)}>
+            <IconContext.Provider value={{ size: '1.2rem' }}>
+              <AiOutlineEdit></AiOutlineEdit>
+            </IconContext.Provider>
+          </div>
         </div>
       </div>
 

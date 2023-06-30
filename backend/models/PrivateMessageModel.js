@@ -1,9 +1,5 @@
 const query = require("../db/database");
-const knex = require("knex");
-
-const knexConfig = require("../knexfile");
-
-const db = knex(knexConfig.development);
+const db = require("../db/db_instance");
 
 class PrivateMessageModel {
   constructor(msg) {

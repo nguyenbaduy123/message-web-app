@@ -50,6 +50,51 @@
   flex-direction: column;
   justify-content: space-around;
   margin-top: 10px;
+  gap: 0.5rem;
+}
+
+.avatar-wrapper {
+  position: relative;
+}
+
+.avatar-wrapper .avatar-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0rem;
+  right: -0.2rem;
+  color: #333333;
+  background-color: #d7d9df;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.edit-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.edit-icon svg {
+  padding: 0.3rem;
+  border-radius: 50%;
+}
+
+.edit-icon svg:hover {
+  background-color: #7500f7;
+}
+
+.edit-name input {
+  display: block;
+  padding: 10px 16px;
+  margin-bottom: 8px;
+  outline: none;
+  border: 2px solid #d7d9df;
+  border-radius: 7px;
+  font-size: 1rem;
+  width: 12rem;
 }
 
 .name {
@@ -102,6 +147,10 @@
 
 .popover {
   position: absolute;
+}
+
+.display-none {
+  display: none;
 }
 
 @media only screen and (max-width: 999px) {

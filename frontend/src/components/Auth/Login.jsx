@@ -106,7 +106,8 @@ export const Login = () => {
     }
   }
   return (
-    <div className={s('container')}>
+    <>
+      {/* <div className={s('container')}>
       <div className={s('authForm')}>
         <h1>Login</h1>
         <form className={s('formRegister')} onSubmit={handleSubmit}>
@@ -148,6 +149,48 @@ export const Login = () => {
           Don't have an account
         </button>
       </div>
-    </div>
+    </div> */}
+
+      <div className={s('app')}>
+        <form onSubmit={handleSubmit}>
+          <h1>Login</h1>
+
+          <div className={s('formInput')}>
+            <label>Email</label>
+            <input
+              value={email}
+              type="email"
+              id="email"
+              placeholder="Your email"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className={s('formInput')}>
+            <label>Password</label>
+            <input
+              value={password}
+              type="password"
+              id="password"
+              placeholder="Your password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button>Login</button>
+
+          <div
+            className={s('link-btn')}
+            onClick={() => {
+              navigate('/register')
+            }}
+          >
+            Don't have an account
+          </div>
+        </form>
+      </div>
+    </>
   )
 }
