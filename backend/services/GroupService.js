@@ -17,3 +17,7 @@ exports.deleteUserGroup = async (group) => {
 exports.updateGroup = async (group) => {
   return await group.updateGroup();
 };
+
+exports.deleteGroup = async (group) => {
+  return await group.deleteGroup();
+};

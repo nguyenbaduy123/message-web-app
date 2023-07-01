@@ -78,3 +78,16 @@ exports.updateGroup = async (req, res) => {
     console.error(error);
   }
 };
+
+exports.deleteGroup = async (req, res) => {
+  try {
+    const body = req.body;
+    const group = new GroupModel(body);
+
+    const result = await GroupService.deleteGroup(group);
+
+    if (result) return res.json(result);
+  } catch (error) {
+    console.error(error);
+  }
+};

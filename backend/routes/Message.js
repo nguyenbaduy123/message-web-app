@@ -12,6 +12,7 @@ const {
   getAllMember,
   deleteUserGroup,
   updateGroup,
+  deleteGroup,
 } = require("../controllers/GroupController");
 
 const { saveMsg } = require("../controllers/PrivateMessageController");
@@ -27,7 +28,8 @@ router
   .route("/group")
   .get(getAllGroupMessage)
   .post(saveGroupMsg)
-  .put(updateGroup);
+  .put(updateGroup)
+  .delete(deleteGroup);
 router.route("/new-group").post(saveGroup);
 router.route("/user-group").post(saveUserGroup).delete(deleteUserGroup);
 router.route("/member").get(getAllMember);

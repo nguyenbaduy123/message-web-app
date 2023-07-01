@@ -70,16 +70,22 @@
   border-radius: 50%;
 }
 
+.nav-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .edit-icon {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 }
 
 .edit-icon svg {
   padding: 0.3rem;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .edit-icon svg:hover {

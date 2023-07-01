@@ -72,6 +72,12 @@ class GroupModel {
 
     return res;
   }
+
+  async deleteGroup() {
+    const res = await db("groups").where("id", this.id).del();
+
+    return res;
+  }
 }
 
 module.exports = GroupModel;

@@ -9,6 +9,8 @@ import messageApi from '../../apis/messageApi'
 import Popover from './Popover'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { MdPhotoCamera } from 'react-icons/md'
+import { RiDeleteBin5Line } from 'react-icons/ri'
+import Swal from 'sweetalert2'
 
 const s = classNames.bind(styles)
 
@@ -20,6 +22,7 @@ const RightBar = ({ expand, setExpand }) => {
     currentGroupId,
     socket,
     setGroupConversation,
+    setCurrentGroupId,
   } = useContext(ChatContext)
   const [options, setOptions] = useState(null)
   const [filter, setFilter] = useState(null)
@@ -103,8 +106,54 @@ const RightBar = ({ expand, setExpand }) => {
     console.log(res)
   }
 
+  const handleRemoveGroup = async (e) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success').then(
+          async () => {
+            const body = {
+              id: currentGroupConversation?.id,
+            }
+            const res = await messageApi.delete('/group', {
+              data: body,
+            })
+
+            console.log(res)
+            ;(async () => {
+              try {
+                const res = await messageApi.get('/group', {
+                  headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem(
+                      'accessToken'
+                    )}`,
+                  },
+                  params: {
+                    id: sessionStorage.getItem('id'),
+                  },
+                })
+                socket.emit('init-room', sessionStorage.getItem('id'), res.data)
+                setGroupConversation([...res.data])
+                setCurrentGroupId(res.data[0].id)
+              } catch (error) {
+                console.log(error)
+              }
+            })()
+          }
+        )
+      }
+    })
+  }
+
   const handleEditName = async (e) => {
-    if (activeEdit == true) {
+    if (activeEdit === true) {
       setGroupConversation((prevConversation) =>
         prevConversation.map((conv) =>
           conv.id === currentGroupConversation.id
@@ -197,10 +246,21 @@ const RightBar = ({ expand, setExpand }) => {
             />
           </div>
 
-          <div className={s('edit-icon')} onClick={(e) => handleEditName(e)}>
-            <IconContext.Provider value={{ size: '1.2rem' }}>
-              <AiOutlineEdit></AiOutlineEdit>
-            </IconContext.Provider>
+          <div className={s('nav-group')}>
+            <div className={s('edit-icon')} onClick={(e) => handleEditName(e)}>
+              <IconContext.Provider value={{ size: '1.2rem' }}>
+                <AiOutlineEdit></AiOutlineEdit>
+              </IconContext.Provider>
+            </div>
+
+            <div
+              className={s('edit-icon')}
+              onClick={(e) => handleRemoveGroup(e)}
+            >
+              <IconContext.Provider value={{ size: '1.2rem' }}>
+                <RiDeleteBin5Line></RiDeleteBin5Line>
+              </IconContext.Provider>
+            </div>
           </div>
         </div>
       </div>
