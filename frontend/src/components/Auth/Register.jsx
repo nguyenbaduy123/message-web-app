@@ -134,7 +134,7 @@ export const Register = () => {
           </div>
 
           <div className={s('formInput')}>
-            <label>Password</label>
+            <label>Email</label>
             <input
               value={email}
               type="email"
